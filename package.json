@@ -1,0 +1,11 @@
+{
+    "name": "com.baegames.lop.masterdata.server",
+    "version": "0.0.1",
+    "displayName": "LOP MasterData (Server)",
+    "description": "League of Physical 서버 전용 MasterData (Protobuf 스키마 + 데이터).",
+    "unity": "2022.3",
+    "author": { "name": "insoo.bae" },
+    "dependencies": {
+        "com.baegames.gameframework": "0.0.2"
+    }
+}

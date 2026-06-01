@@ -1,0 +1,17 @@
+{
+    "name": "baegames.LOP.MasterData.Server.Generated",
+    "rootNamespace": "",
+    "references": [
+        "baegames.LOP.MasterData.Server.Runtime",
+        "baegames.GameFramework.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": ["Google.Protobuf.dll"],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

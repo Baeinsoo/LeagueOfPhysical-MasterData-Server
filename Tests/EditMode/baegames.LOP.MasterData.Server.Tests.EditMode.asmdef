@@ -1,0 +1,19 @@
+{
+    "name": "baegames.LOP.MasterData.Server.Tests.EditMode",
+    "rootNamespace": "LOP.MasterData.Tests",
+    "references": [
+        "baegames.LOP.MasterData.Server.Runtime",
+        "baegames.LOP.MasterData.Server.Generated",
+        "baegames.GameFramework.Runtime"
+    ],
+    "includePlatforms": ["Editor"],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false,
+    "optionalUnityReferences": ["TestAssemblies"]
+}
