@@ -1,7 +1,11 @@
 {
     "name": "baegames.LOP.MasterData.Server.Runtime",
     "rootNamespace": "LOP.MasterData",
-    "references": ["baegames.GameFramework.Runtime"],
+    "references": [
+        "baegames.LOP.MasterData.Server.Generated",
+        "Luban.Runtime",
+        "UniTask"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
