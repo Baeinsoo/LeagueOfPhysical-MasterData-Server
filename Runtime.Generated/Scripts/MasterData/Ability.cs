@@ -21,10 +21,13 @@ public sealed partial class Ability : Luban.BeanBase
         Name = _buf.ReadString();
         CooldownTicks = _buf.ReadLong();
         MpCost = _buf.ReadInt();
-        CastTimeTicks = _buf.ReadLong();
+        StartupTicks = _buf.ReadLong();
+        ActiveTicks = _buf.ReadLong();
+        RecoveryTicks = _buf.ReadLong();
         TargetingMode = _buf.ReadString();
         Range = _buf.ReadFloat();
         ProducesEffectId = _buf.ReadInt();
+        MotionSpeed = _buf.ReadFloat();
     }
 
     public static Ability DeserializeAbility(ByteBuf _buf)
@@ -53,9 +56,17 @@ public sealed partial class Ability : Luban.BeanBase
     /// </summary>
     public readonly int MpCost;
     /// <summary>
-    /// cast_time_ticks
+    /// startup_ticks
     /// </summary>
-    public readonly long CastTimeTicks;
+    public readonly long StartupTicks;
+    /// <summary>
+    /// active_ticks
+    /// </summary>
+    public readonly long ActiveTicks;
+    /// <summary>
+    /// recovery_ticks
+    /// </summary>
+    public readonly long RecoveryTicks;
     /// <summary>
     /// targeting_mode
     /// </summary>
@@ -68,6 +79,10 @@ public sealed partial class Ability : Luban.BeanBase
     /// produces_effect_id
     /// </summary>
     public readonly int ProducesEffectId;
+    /// <summary>
+    /// motion_speed
+    /// </summary>
+    public readonly float MotionSpeed;
    
     public const int __ID__ = 464145674;
     public override int GetTypeId() => __ID__;
@@ -84,10 +99,13 @@ public sealed partial class Ability : Luban.BeanBase
         + "name:" + Name + ","
         + "cooldownTicks:" + CooldownTicks + ","
         + "mpCost:" + MpCost + ","
-        + "castTimeTicks:" + CastTimeTicks + ","
+        + "startupTicks:" + StartupTicks + ","
+        + "activeTicks:" + ActiveTicks + ","
+        + "recoveryTicks:" + RecoveryTicks + ","
         + "targetingMode:" + TargetingMode + ","
         + "range:" + Range + ","
         + "producesEffectId:" + ProducesEffectId + ","
+        + "motionSpeed:" + MotionSpeed + ","
         + "}";
     }
 }
