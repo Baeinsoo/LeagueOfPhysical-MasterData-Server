@@ -24,10 +24,7 @@ public sealed partial class Ability : Luban.BeanBase
         StartupTicks = _buf.ReadLong();
         ActiveTicks = _buf.ReadLong();
         RecoveryTicks = _buf.ReadLong();
-        TargetingMode = _buf.ReadString();
-        Range = _buf.ReadFloat();
-        ProducesEffectId = _buf.ReadInt();
-        MotionSpeed = _buf.ReadFloat();
+        {int n0 = _buf.ReadSize(); Effects = new System.Collections.Generic.List<AbilityEffect>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { AbilityEffect _e0;  _e0 = global::LOP.MasterData.AbilityEffect.DeserializeAbilityEffect(_buf); Effects.Add(_e0);}}
     }
 
     public static Ability DeserializeAbility(ByteBuf _buf)
@@ -68,27 +65,16 @@ public sealed partial class Ability : Luban.BeanBase
     /// </summary>
     public readonly long RecoveryTicks;
     /// <summary>
-    /// targeting_mode
+    /// effects
     /// </summary>
-    public readonly string TargetingMode;
-    /// <summary>
-    /// range
-    /// </summary>
-    public readonly float Range;
-    /// <summary>
-    /// produces_effect_id
-    /// </summary>
-    public readonly int ProducesEffectId;
-    /// <summary>
-    /// motion_speed
-    /// </summary>
-    public readonly float MotionSpeed;
+    public readonly System.Collections.Generic.List<AbilityEffect> Effects;
    
     public const int __ID__ = 464145674;
     public override int GetTypeId() => __ID__;
 
     public  void ResolveRef(Tables tables)
     {
+        foreach (var _e in Effects) { _e?.ResolveRef(tables); }
     }
 
     public override string ToString()
@@ -102,10 +88,7 @@ public sealed partial class Ability : Luban.BeanBase
         + "startupTicks:" + StartupTicks + ","
         + "activeTicks:" + ActiveTicks + ","
         + "recoveryTicks:" + RecoveryTicks + ","
-        + "targetingMode:" + TargetingMode + ","
-        + "range:" + Range + ","
-        + "producesEffectId:" + ProducesEffectId + ","
-        + "motionSpeed:" + MotionSpeed + ","
+        + "effects:" + Luban.StringUtil.CollectionToString(Effects) + ","
         + "}";
     }
 }
