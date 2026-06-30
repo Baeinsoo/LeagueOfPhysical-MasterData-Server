@@ -22,10 +22,6 @@ public partial class Tables
     /// </summary>
     public TbSkin TbSkin {get; }
     /// <summary>
-    /// Action
-    /// </summary>
-    public TbAction TbAction {get; }
-    /// <summary>
     /// Item
     /// </summary>
     public TbItem TbItem {get; }
@@ -42,7 +38,6 @@ public partial class Tables
     {
         TbCharacter = new TbCharacter(loader("tbcharacter"));
         TbSkin = new TbSkin(loader("tbskin"));
-        TbAction = new TbAction(loader("tbaction"));
         TbItem = new TbItem(loader("tbitem"));
         TbStatusEffect = new TbStatusEffect(loader("tbstatuseffect"));
         TbAbility = new TbAbility(loader("tbability"));
@@ -53,7 +48,6 @@ public partial class Tables
     {
         TbCharacter.ResolveRef(this);
         TbSkin.ResolveRef(this);
-        TbAction.ResolveRef(this);
         TbItem.ResolveRef(this);
         TbStatusEffect.ResolveRef(this);
         TbAbility.ResolveRef(this);
