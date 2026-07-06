@@ -28,6 +28,7 @@ public abstract partial class AbilityEffect : Luban.BeanBase
             case StatusEffectApplyEffect.__ID__: return new StatusEffectApplyEffect(_buf);
             case MotionEffect.__ID__: return new MotionEffect(_buf);
             case DamageEffect.__ID__: return new DamageEffect(_buf);
+            case KnockbackEffect.__ID__: return new KnockbackEffect(_buf);
             default: throw new SerializationException();
         }
     }
