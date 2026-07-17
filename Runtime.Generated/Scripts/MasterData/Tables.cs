@@ -33,6 +33,10 @@ public partial class Tables
     /// Ability
     /// </summary>
     public TbAbility TbAbility {get; }
+    /// <summary>
+    /// CombatConfig(전역 전투 튜닝, 서버 전용)
+    /// </summary>
+    public TbCombatConfig TbCombatConfig {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
@@ -41,6 +45,7 @@ public partial class Tables
         TbItem = new TbItem(loader("tbitem"));
         TbStatusEffect = new TbStatusEffect(loader("tbstatuseffect"));
         TbAbility = new TbAbility(loader("tbability"));
+        TbCombatConfig = new TbCombatConfig(loader("tbcombatconfig"));
         ResolveRef();
     }
     
@@ -51,6 +56,7 @@ public partial class Tables
         TbItem.ResolveRef(this);
         TbStatusEffect.ResolveRef(this);
         TbAbility.ResolveRef(this);
+        TbCombatConfig.ResolveRef(this);
     }
 }
 
