@@ -20,8 +20,6 @@ public sealed partial class KnockbackEffect : AbilityEffect
     public KnockbackEffect(ByteBuf _buf)  : base(_buf) 
     {
         Strength = _buf.ReadFloat();
-        Range = _buf.ReadFloat();
-        Angle = _buf.ReadFloat();
         DurationTicks = _buf.ReadInt();
         DecayPerTick = _buf.ReadFloat();
     }
@@ -32,8 +30,6 @@ public sealed partial class KnockbackEffect : AbilityEffect
     }
 
     public readonly float Strength;
-    public readonly float Range;
-    public readonly float Angle;
     public readonly int DurationTicks;
     public readonly float DecayPerTick;
    
@@ -49,8 +45,6 @@ public sealed partial class KnockbackEffect : AbilityEffect
     {
         return "{ "
         + "strength:" + Strength + ","
-        + "range:" + Range + ","
-        + "angle:" + Angle + ","
         + "durationTicks:" + DurationTicks + ","
         + "decayPerTick:" + DecayPerTick + ","
         + "}";
