@@ -18,7 +18,8 @@ namespace LOP.MasterData
         // server projection: SkinAsset is client-only (group c), so it is absent here.
         private static readonly string[] TableFiles =
         {
-            "tbcharacter", "tbskin", "tbitem", "tbstatuseffect", "tbability", "tbcombatconfig"
+            "tbcharacter", "tbskin", "tbitem", "tbstatuseffect", "tbability", "tbcombatconfig",
+            "tbcharacterloadout"
         };
 
         public Tables Tables { get; private set; }
