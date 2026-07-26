@@ -17,6 +17,7 @@ public sealed partial class StatusEffectApplyEffect : AbilityEffect
     public StatusEffectApplyEffect(ByteBuf _buf)  : base(_buf) 
     {
         StatusEffectId = _buf.ReadInt();
+        TargetType = _buf.ReadString();
     }
 
     public static StatusEffectApplyEffect DeserializeStatusEffectApplyEffect(ByteBuf _buf)
@@ -25,6 +26,7 @@ public sealed partial class StatusEffectApplyEffect : AbilityEffect
     }
 
     public readonly int StatusEffectId;
+    public readonly string TargetType;
    
     public const int __ID__ = 652034652;
     public override int GetTypeId() => __ID__;
@@ -38,6 +40,7 @@ public sealed partial class StatusEffectApplyEffect : AbilityEffect
     {
         return "{ "
         + "statusEffectId:" + StatusEffectId + ","
+        + "targetType:" + TargetType + ","
         + "}";
     }
 }
