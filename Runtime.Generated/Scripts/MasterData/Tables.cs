@@ -41,6 +41,18 @@ public partial class Tables
     /// CharacterLoadout
     /// </summary>
     public TbCharacterLoadout TbCharacterLoadout {get; }
+    /// <summary>
+    /// GameMode
+    /// </summary>
+    public TbGameMode TbGameMode {get; }
+    /// <summary>
+    /// GameMap
+    /// </summary>
+    public TbMap TbMap {get; }
+    /// <summary>
+    /// Queue
+    /// </summary>
+    public TbQueue TbQueue {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
@@ -51,6 +63,9 @@ public partial class Tables
         TbAbility = new TbAbility(loader("tbability"));
         TbCombatConfig = new TbCombatConfig(loader("tbcombatconfig"));
         TbCharacterLoadout = new TbCharacterLoadout(loader("tbcharacterloadout"));
+        TbGameMode = new TbGameMode(loader("tbgamemode"));
+        TbMap = new TbMap(loader("tbmap"));
+        TbQueue = new TbQueue(loader("tbqueue"));
         ResolveRef();
     }
     
@@ -63,6 +78,9 @@ public partial class Tables
         TbAbility.ResolveRef(this);
         TbCombatConfig.ResolveRef(this);
         TbCharacterLoadout.ResolveRef(this);
+        TbGameMode.ResolveRef(this);
+        TbMap.ResolveRef(this);
+        TbQueue.ResolveRef(this);
     }
 }
 
