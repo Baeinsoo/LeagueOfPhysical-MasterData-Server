@@ -4,6 +4,7 @@
     "references": [
         "baegames.LOP.MasterData.Server.Runtime",
         "baegames.LOP.MasterData.Server.Generated",
+        "baegames.LOP.MasterData.Server.Editor",
         "baegames.GameFramework.Runtime"
     ],
     "includePlatforms": ["Editor"],

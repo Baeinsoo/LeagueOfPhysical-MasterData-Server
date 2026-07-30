@@ -45,6 +45,8 @@ namespace LOP.MasterData
             string uri;
 #if UNITY_EDITOR
             // Editor: package StreamingAssets are not merged into Application.streamingAssetsPath.
+            // (In a player build Unity does not copy them either — MasterDataPlayerBuildProcessor adds
+            //  this folder to the build's StreamingAssets. A test asserts the two paths match.)
             uri = "file://" + Path.GetFullPath(
                 $"Packages/com.baegames.lop.masterdata.server/Runtime.Generated/StreamingAssets/{relativePath}");
 #elif UNITY_ANDROID
