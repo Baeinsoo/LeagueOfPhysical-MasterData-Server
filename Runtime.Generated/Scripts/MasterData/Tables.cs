@@ -53,6 +53,10 @@ public partial class Tables
     /// Queue
     /// </summary>
     public TbQueue TbQueue {get; }
+    /// <summary>
+    /// FlappyConfig(Flappy Race 튜닝, 클&#183;서 공용)
+    /// </summary>
+    public TbFlappyConfig TbFlappyConfig {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
@@ -66,6 +70,7 @@ public partial class Tables
         TbGameMode = new TbGameMode(loader("tbgamemode"));
         TbMap = new TbMap(loader("tbmap"));
         TbQueue = new TbQueue(loader("tbqueue"));
+        TbFlappyConfig = new TbFlappyConfig(loader("tbflappyconfig"));
         ResolveRef();
     }
     
@@ -81,6 +86,7 @@ public partial class Tables
         TbGameMode.ResolveRef(this);
         TbMap.ResolveRef(this);
         TbQueue.ResolveRef(this);
+        TbFlappyConfig.ResolveRef(this);
     }
 }
 
