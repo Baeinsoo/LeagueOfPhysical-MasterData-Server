@@ -24,6 +24,8 @@ public sealed partial class FlappyConfig : Luban.BeanBase
         BodyRadius = _buf.ReadFloat();
         BodyHeight = _buf.ReadFloat();
         Restitution = _buf.ReadFloat();
+        StunTime = _buf.ReadFloat();
+        InvulnTime = _buf.ReadFloat();
     }
 
     public static FlappyConfig DeserializeFlappyConfig(ByteBuf _buf)
@@ -63,6 +65,14 @@ public sealed partial class FlappyConfig : Luban.BeanBase
     /// restitution
     /// </summary>
     public readonly float Restitution;
+    /// <summary>
+    /// stun_time
+    /// </summary>
+    public readonly float StunTime;
+    /// <summary>
+    /// invuln_time
+    /// </summary>
+    public readonly float InvulnTime;
    
     public const int __ID__ = 1154294080;
     public override int GetTypeId() => __ID__;
@@ -82,6 +92,8 @@ public sealed partial class FlappyConfig : Luban.BeanBase
         + "bodyRadius:" + BodyRadius + ","
         + "bodyHeight:" + BodyHeight + ","
         + "restitution:" + Restitution + ","
+        + "stunTime:" + StunTime + ","
+        + "invulnTime:" + InvulnTime + ","
         + "}";
     }
 }
