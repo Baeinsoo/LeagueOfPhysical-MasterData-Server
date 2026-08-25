@@ -24,6 +24,11 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
         AimTimeoutSec = _buf.ReadFloat();
         MatchTurnLimit = _buf.ReadInt();
         DropOutLimit = _buf.ReadInt();
+        ForceMultiplier = _buf.ReadFloat();
+        HorizontalForceMultiplier = _buf.ReadFloat();
+        FalloffRate = _buf.ReadFloat();
+        CoverageSamples = _buf.ReadInt();
+        HoldTimeMax = _buf.ReadFloat();
     }
 
     public static PanchigiConfig DeserializePanchigiConfig(ByteBuf _buf)
@@ -63,6 +68,26 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
     /// drop_out_limit
     /// </summary>
     public readonly int DropOutLimit;
+    /// <summary>
+    /// force_multiplier
+    /// </summary>
+    public readonly float ForceMultiplier;
+    /// <summary>
+    /// horizontal_force_multiplier
+    /// </summary>
+    public readonly float HorizontalForceMultiplier;
+    /// <summary>
+    /// falloff_rate
+    /// </summary>
+    public readonly float FalloffRate;
+    /// <summary>
+    /// coverage_samples
+    /// </summary>
+    public readonly int CoverageSamples;
+    /// <summary>
+    /// hold_time_max
+    /// </summary>
+    public readonly float HoldTimeMax;
    
     public const int __ID__ = -598872373;
     public override int GetTypeId() => __ID__;
@@ -82,6 +107,11 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
         + "aimTimeoutSec:" + AimTimeoutSec + ","
         + "matchTurnLimit:" + MatchTurnLimit + ","
         + "dropOutLimit:" + DropOutLimit + ","
+        + "forceMultiplier:" + ForceMultiplier + ","
+        + "horizontalForceMultiplier:" + HorizontalForceMultiplier + ","
+        + "falloffRate:" + FalloffRate + ","
+        + "coverageSamples:" + CoverageSamples + ","
+        + "holdTimeMax:" + HoldTimeMax + ","
         + "}";
     }
 }
