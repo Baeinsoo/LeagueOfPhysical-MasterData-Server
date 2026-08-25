@@ -17,7 +17,6 @@ public sealed partial class PanchigiSetup : Luban.BeanBase
     public PanchigiSetup(ByteBuf _buf) 
     {
         Id = _buf.ReadInt();
-        CoinCount = _buf.ReadInt();
         Formation = _buf.ReadString();
     }
 
@@ -30,10 +29,6 @@ public sealed partial class PanchigiSetup : Luban.BeanBase
     /// id
     /// </summary>
     public readonly int Id;
-    /// <summary>
-    /// coin_count
-    /// </summary>
-    public readonly int CoinCount;
     /// <summary>
     /// formation
     /// </summary>
@@ -50,7 +45,6 @@ public sealed partial class PanchigiSetup : Luban.BeanBase
     {
         return "{ "
         + "id:" + Id + ","
-        + "coinCount:" + CoinCount + ","
         + "formation:" + Formation + ","
         + "}";
     }
