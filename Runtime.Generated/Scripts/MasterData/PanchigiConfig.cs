@@ -29,6 +29,7 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
         FalloffRate = _buf.ReadFloat();
         CoverageSamples = _buf.ReadInt();
         HoldTimeMax = _buf.ReadFloat();
+        ContactMax = _buf.ReadInt();
     }
 
     public static PanchigiConfig DeserializePanchigiConfig(ByteBuf _buf)
@@ -88,6 +89,10 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
     /// hold_time_max
     /// </summary>
     public readonly float HoldTimeMax;
+    /// <summary>
+    /// contact_max
+    /// </summary>
+    public readonly int ContactMax;
    
     public const int __ID__ = -598872373;
     public override int GetTypeId() => __ID__;
@@ -112,6 +117,7 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
         + "falloffRate:" + FalloffRate + ","
         + "coverageSamples:" + CoverageSamples + ","
         + "holdTimeMax:" + HoldTimeMax + ","
+        + "contactMax:" + ContactMax + ","
         + "}";
     }
 }
