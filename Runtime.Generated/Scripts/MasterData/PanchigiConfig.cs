@@ -26,7 +26,7 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
         DropOutLimit = _buf.ReadInt();
         ForceMultiplier = _buf.ReadFloat();
         HorizontalForceMultiplier = _buf.ReadFloat();
-        FalloffRate = _buf.ReadFloat();
+        InfluenceRadius = _buf.ReadFloat();
         CoverageSamples = _buf.ReadInt();
         HoldTimeMax = _buf.ReadFloat();
         ContactMax = _buf.ReadInt();
@@ -78,9 +78,9 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
     /// </summary>
     public readonly float HorizontalForceMultiplier;
     /// <summary>
-    /// falloff_rate
+    /// influence_radius
     /// </summary>
-    public readonly float FalloffRate;
+    public readonly float InfluenceRadius;
     /// <summary>
     /// coverage_samples
     /// </summary>
@@ -114,7 +114,7 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
         + "dropOutLimit:" + DropOutLimit + ","
         + "forceMultiplier:" + ForceMultiplier + ","
         + "horizontalForceMultiplier:" + HorizontalForceMultiplier + ","
-        + "falloffRate:" + FalloffRate + ","
+        + "influenceRadius:" + InfluenceRadius + ","
         + "coverageSamples:" + CoverageSamples + ","
         + "holdTimeMax:" + HoldTimeMax + ","
         + "contactMax:" + ContactMax + ","
