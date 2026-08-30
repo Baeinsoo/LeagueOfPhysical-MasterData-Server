@@ -65,6 +65,10 @@ public partial class Tables
     /// PanchigiSetup(인원별 판 구성)
     /// </summary>
     public TbPanchigiSetup TbPanchigiSetup {get; }
+    /// <summary>
+    /// SkydiveConfig(스카이다이브 자세&#183;스태미나 튜닝, 클서 공용)
+    /// </summary>
+    public TbSkydiveConfig TbSkydiveConfig {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
@@ -81,6 +85,7 @@ public partial class Tables
         TbFlappyConfig = new TbFlappyConfig(loader("tbflappyconfig"));
         TbPanchigiConfig = new TbPanchigiConfig(loader("tbpanchigiconfig"));
         TbPanchigiSetup = new TbPanchigiSetup(loader("tbpanchigisetup"));
+        TbSkydiveConfig = new TbSkydiveConfig(loader("tbskydiveconfig"));
         ResolveRef();
     }
     
@@ -99,6 +104,7 @@ public partial class Tables
         TbFlappyConfig.ResolveRef(this);
         TbPanchigiConfig.ResolveRef(this);
         TbPanchigiSetup.ResolveRef(this);
+        TbSkydiveConfig.ResolveRef(this);
     }
 }
 
