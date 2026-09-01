@@ -38,6 +38,7 @@ public sealed partial class SkydiveConfig : Luban.BeanBase
         GroundMoveSpeed = _buf.ReadFloat();
         GroundAccel = _buf.ReadFloat();
         JumpPower = _buf.ReadFloat();
+        PoseClearance = _buf.ReadFloat();
     }
 
     public static SkydiveConfig DeserializeSkydiveConfig(ByteBuf _buf)
@@ -133,6 +134,10 @@ public sealed partial class SkydiveConfig : Luban.BeanBase
     /// jump_power
     /// </summary>
     public readonly float JumpPower;
+    /// <summary>
+    /// pose_clearance
+    /// </summary>
+    public readonly float PoseClearance;
    
     public const int __ID__ = 1641672215;
     public override int GetTypeId() => __ID__;
@@ -166,6 +171,7 @@ public sealed partial class SkydiveConfig : Luban.BeanBase
         + "groundMoveSpeed:" + GroundMoveSpeed + ","
         + "groundAccel:" + GroundAccel + ","
         + "jumpPower:" + JumpPower + ","
+        + "poseClearance:" + PoseClearance + ","
         + "}";
     }
 }
