@@ -35,6 +35,9 @@ public sealed partial class SkydiveConfig : Luban.BeanBase
         GlideDrain = _buf.ReadFloat();
         GroundRecover = _buf.ReadFloat();
         EmergencyGlideTime = _buf.ReadFloat();
+        GroundMoveSpeed = _buf.ReadFloat();
+        GroundAccel = _buf.ReadFloat();
+        JumpPower = _buf.ReadFloat();
     }
 
     public static SkydiveConfig DeserializeSkydiveConfig(ByteBuf _buf)
@@ -118,6 +121,18 @@ public sealed partial class SkydiveConfig : Luban.BeanBase
     /// emergency_glide_time
     /// </summary>
     public readonly float EmergencyGlideTime;
+    /// <summary>
+    /// ground_move_speed
+    /// </summary>
+    public readonly float GroundMoveSpeed;
+    /// <summary>
+    /// ground_accel
+    /// </summary>
+    public readonly float GroundAccel;
+    /// <summary>
+    /// jump_power
+    /// </summary>
+    public readonly float JumpPower;
    
     public const int __ID__ = 1641672215;
     public override int GetTypeId() => __ID__;
@@ -148,6 +163,9 @@ public sealed partial class SkydiveConfig : Luban.BeanBase
         + "glideDrain:" + GlideDrain + ","
         + "groundRecover:" + GroundRecover + ","
         + "emergencyGlideTime:" + EmergencyGlideTime + ","
+        + "groundMoveSpeed:" + GroundMoveSpeed + ","
+        + "groundAccel:" + GroundAccel + ","
+        + "jumpPower:" + JumpPower + ","
         + "}";
     }
 }
