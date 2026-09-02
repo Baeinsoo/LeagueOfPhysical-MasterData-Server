@@ -26,6 +26,10 @@ public sealed partial class FlappyConfig : Luban.BeanBase
         Restitution = _buf.ReadFloat();
         StunTime = _buf.ReadFloat();
         InvulnTime = _buf.ReadFloat();
+        DashMult = _buf.ReadFloat();
+        DashDuration = _buf.ReadFloat();
+        DashChargeBase = _buf.ReadFloat();
+        DashChargeDive = _buf.ReadFloat();
     }
 
     public static FlappyConfig DeserializeFlappyConfig(ByteBuf _buf)
@@ -73,6 +77,22 @@ public sealed partial class FlappyConfig : Luban.BeanBase
     /// invuln_time
     /// </summary>
     public readonly float InvulnTime;
+    /// <summary>
+    /// dash_mult
+    /// </summary>
+    public readonly float DashMult;
+    /// <summary>
+    /// dash_duration
+    /// </summary>
+    public readonly float DashDuration;
+    /// <summary>
+    /// dash_charge_base
+    /// </summary>
+    public readonly float DashChargeBase;
+    /// <summary>
+    /// dash_charge_dive
+    /// </summary>
+    public readonly float DashChargeDive;
    
     public const int __ID__ = 1154294080;
     public override int GetTypeId() => __ID__;
@@ -94,6 +114,10 @@ public sealed partial class FlappyConfig : Luban.BeanBase
         + "restitution:" + Restitution + ","
         + "stunTime:" + StunTime + ","
         + "invulnTime:" + InvulnTime + ","
+        + "dashMult:" + DashMult + ","
+        + "dashDuration:" + DashDuration + ","
+        + "dashChargeBase:" + DashChargeBase + ","
+        + "dashChargeDive:" + DashChargeDive + ","
         + "}";
     }
 }
