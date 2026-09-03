@@ -30,6 +30,10 @@ public sealed partial class FlappyConfig : Luban.BeanBase
         DashDuration = _buf.ReadFloat();
         DashChargeBase = _buf.ReadFloat();
         DashChargeDive = _buf.ReadFloat();
+        ChaserStartX = _buf.ReadFloat();
+        ChaserInitialSpeed = _buf.ReadFloat();
+        ChaserAcceleration = _buf.ReadFloat();
+        ChaserMaxSpeed = _buf.ReadFloat();
     }
 
     public static FlappyConfig DeserializeFlappyConfig(ByteBuf _buf)
@@ -93,6 +97,22 @@ public sealed partial class FlappyConfig : Luban.BeanBase
     /// dash_charge_dive
     /// </summary>
     public readonly float DashChargeDive;
+    /// <summary>
+    /// chaser_start_x
+    /// </summary>
+    public readonly float ChaserStartX;
+    /// <summary>
+    /// chaser_initial_speed
+    /// </summary>
+    public readonly float ChaserInitialSpeed;
+    /// <summary>
+    /// chaser_acceleration
+    /// </summary>
+    public readonly float ChaserAcceleration;
+    /// <summary>
+    /// chaser_max_speed
+    /// </summary>
+    public readonly float ChaserMaxSpeed;
    
     public const int __ID__ = 1154294080;
     public override int GetTypeId() => __ID__;
@@ -118,6 +138,10 @@ public sealed partial class FlappyConfig : Luban.BeanBase
         + "dashDuration:" + DashDuration + ","
         + "dashChargeBase:" + DashChargeBase + ","
         + "dashChargeDive:" + DashChargeDive + ","
+        + "chaserStartX:" + ChaserStartX + ","
+        + "chaserInitialSpeed:" + ChaserInitialSpeed + ","
+        + "chaserAcceleration:" + ChaserAcceleration + ","
+        + "chaserMaxSpeed:" + ChaserMaxSpeed + ","
         + "}";
     }
 }
