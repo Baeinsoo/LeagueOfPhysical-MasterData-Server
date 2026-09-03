@@ -40,6 +40,9 @@ public sealed partial class SkydiveConfig : Luban.BeanBase
         JumpPower = _buf.ReadFloat();
         PoseClearance = _buf.ReadFloat();
         FallBrake = _buf.ReadFloat();
+        GlideWindLag = _buf.ReadFloat();
+        SpreadWindLag = _buf.ReadFloat();
+        DiveWindLag = _buf.ReadFloat();
     }
 
     public static SkydiveConfig DeserializeSkydiveConfig(ByteBuf _buf)
@@ -143,6 +146,18 @@ public sealed partial class SkydiveConfig : Luban.BeanBase
     /// fall_brake
     /// </summary>
     public readonly float FallBrake;
+    /// <summary>
+    /// glide_wind_lag
+    /// </summary>
+    public readonly float GlideWindLag;
+    /// <summary>
+    /// spread_wind_lag
+    /// </summary>
+    public readonly float SpreadWindLag;
+    /// <summary>
+    /// dive_wind_lag
+    /// </summary>
+    public readonly float DiveWindLag;
    
     public const int __ID__ = 1641672215;
     public override int GetTypeId() => __ID__;
@@ -178,6 +193,9 @@ public sealed partial class SkydiveConfig : Luban.BeanBase
         + "jumpPower:" + JumpPower + ","
         + "poseClearance:" + PoseClearance + ","
         + "fallBrake:" + FallBrake + ","
+        + "glideWindLag:" + GlideWindLag + ","
+        + "spreadWindLag:" + SpreadWindLag + ","
+        + "diveWindLag:" + DiveWindLag + ","
         + "}";
     }
 }
