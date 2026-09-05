@@ -34,6 +34,7 @@ public sealed partial class FlappyConfig : Luban.BeanBase
         ChaserInitialSpeed = _buf.ReadFloat();
         ChaserAcceleration = _buf.ReadFloat();
         ChaserMaxSpeed = _buf.ReadFloat();
+        FinishBrake = _buf.ReadFloat();
     }
 
     public static FlappyConfig DeserializeFlappyConfig(ByteBuf _buf)
@@ -113,6 +114,10 @@ public sealed partial class FlappyConfig : Luban.BeanBase
     /// chaser_max_speed
     /// </summary>
     public readonly float ChaserMaxSpeed;
+    /// <summary>
+    /// finish_brake
+    /// </summary>
+    public readonly float FinishBrake;
    
     public const int __ID__ = 1154294080;
     public override int GetTypeId() => __ID__;
@@ -142,6 +147,7 @@ public sealed partial class FlappyConfig : Luban.BeanBase
         + "chaserInitialSpeed:" + ChaserInitialSpeed + ","
         + "chaserAcceleration:" + ChaserAcceleration + ","
         + "chaserMaxSpeed:" + ChaserMaxSpeed + ","
+        + "finishBrake:" + FinishBrake + ","
         + "}";
     }
 }
