@@ -43,6 +43,7 @@ public sealed partial class SkydiveConfig : Luban.BeanBase
         GlideWindLag = _buf.ReadFloat();
         SpreadWindLag = _buf.ReadFloat();
         DiveWindLag = _buf.ReadFloat();
+        LandingLethalSpeed = _buf.ReadFloat();
     }
 
     public static SkydiveConfig DeserializeSkydiveConfig(ByteBuf _buf)
@@ -158,6 +159,10 @@ public sealed partial class SkydiveConfig : Luban.BeanBase
     /// dive_wind_lag
     /// </summary>
     public readonly float DiveWindLag;
+    /// <summary>
+    /// landing_lethal_speed
+    /// </summary>
+    public readonly float LandingLethalSpeed;
    
     public const int __ID__ = 1641672215;
     public override int GetTypeId() => __ID__;
@@ -196,6 +201,7 @@ public sealed partial class SkydiveConfig : Luban.BeanBase
         + "glideWindLag:" + GlideWindLag + ","
         + "spreadWindLag:" + SpreadWindLag + ","
         + "diveWindLag:" + DiveWindLag + ","
+        + "landingLethalSpeed:" + LandingLethalSpeed + ","
         + "}";
     }
 }
