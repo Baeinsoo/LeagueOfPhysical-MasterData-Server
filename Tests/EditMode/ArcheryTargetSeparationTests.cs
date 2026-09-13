@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using Luban;
 using NUnit.Framework;
@@ -87,6 +88,59 @@ namespace LOP.MasterData.Tests
             Assert.Greater(trapKinds, 0,
                 $"trap_ratio_max({config.TrapRatioMax})가 0보다 큰데 #ArcheryTarget에 is_trap=TRUE인 줄이 없다 "
                 + "— 함정이 영영 안 뜬다");
+        }
+
+        // 이 슬라이스의 전제: 크기(radius)로 함정을 구분할 수 있으면 안 된다. 함정 종류가 깨끗한
+        // 종류와 반경·가중치를 그대로 나눠 가져야, 플레이어가 "큰 과녁 = 함정"을 학습할 수 없다.
+        // 반경 하나만 가중치를 바꿔도 이 시험이 잡아야 한다.
+        [Test]
+        public void 함정과_깨끗한_과녁이_반경별로_같은_가중치를_공유한다()
+        {
+            var tables = LoadTables();
+            var rows = tables.TbArcheryTarget.DataList;
+            Assert.IsNotEmpty(rows, "TbArcheryTarget이 비어 있다 — 과녁 종류가 없으면 웨이브가 영원히 빈다");
+
+            Dictionary<float, List<int>> CleanOrTrapWeightsByRadius(bool isTrap)
+            {
+                var byRadius = new Dictionary<float, List<int>>();
+                foreach (var row in rows)
+                {
+                    if (row.IsTrap != isTrap) continue;
+                    if (!byRadius.TryGetValue(row.Radius, out var weights))
+                    {
+                        weights = new List<int>();
+                        byRadius[row.Radius] = weights;
+                    }
+                    weights.Add(row.Weight);
+                }
+                foreach (var weights in byRadius.Values) weights.Sort();
+                return byRadius;
+            }
+
+            var cleanByRadius = CleanOrTrapWeightsByRadius(isTrap: false);
+            var trapByRadius = CleanOrTrapWeightsByRadius(isTrap: true);
+
+            Assert.IsNotEmpty(cleanByRadius, "깨끗한(is_trap=FALSE) 과녁 종류가 없다");
+            Assert.IsNotEmpty(trapByRadius, "함정(is_trap=TRUE) 과녁 종류가 없다");
+
+            foreach (var (radius, cleanWeights) in cleanByRadius)
+            {
+                Assert.IsTrue(trapByRadius.TryGetValue(radius, out var trapWeights),
+                    $"반경 {radius}는 깨끗한 과녁에만 있고 짝이 되는 함정 과녁이 없다 — "
+                    + "이 크기를 보면 무조건 안전하다고 학습할 수 있다");
+
+                CollectionAssert.AreEqual(cleanWeights, trapWeights,
+                    $"반경 {radius}에서 깨끗한 과녁 가중치({string.Join(",", cleanWeights)})와 "
+                    + $"함정 과녁 가중치({string.Join(",", trapWeights)})가 다르다 — "
+                    + "같은 크기라도 함정일 확률이 달라지면 크기가 함정을 암시하게 된다");
+            }
+
+            foreach (var radius in trapByRadius.Keys)
+            {
+                Assert.IsTrue(cleanByRadius.ContainsKey(radius),
+                    $"반경 {radius}는 함정 과녁에만 있고 짝이 되는 깨끗한 과녁이 없다 — "
+                    + "이 크기를 보면 무조건 함정이라고 학습할 수 있다");
+            }
         }
     }
 }
