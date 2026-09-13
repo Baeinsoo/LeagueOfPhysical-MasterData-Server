@@ -69,6 +69,14 @@ public partial class Tables
     /// SkydiveConfig(스카이다이브 자세&#183;스태미나 튜닝, 클서 공용)
     /// </summary>
     public TbSkydiveConfig TbSkydiveConfig {get; }
+    /// <summary>
+    /// ArcheryConfig(활쏘기 웨이브 튜닝)
+    /// </summary>
+    public TbArcheryConfig TbArcheryConfig {get; }
+    /// <summary>
+    /// ArcheryTargetKind(과녁 종류)
+    /// </summary>
+    public TbArcheryTarget TbArcheryTarget {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
@@ -86,6 +94,8 @@ public partial class Tables
         TbPanchigiConfig = new TbPanchigiConfig(loader("tbpanchigiconfig"));
         TbPanchigiSetup = new TbPanchigiSetup(loader("tbpanchigisetup"));
         TbSkydiveConfig = new TbSkydiveConfig(loader("tbskydiveconfig"));
+        TbArcheryConfig = new TbArcheryConfig(loader("tbarcheryconfig"));
+        TbArcheryTarget = new TbArcheryTarget(loader("tbarcherytarget"));
         ResolveRef();
     }
     
@@ -105,6 +115,8 @@ public partial class Tables
         TbPanchigiConfig.ResolveRef(this);
         TbPanchigiSetup.ResolveRef(this);
         TbSkydiveConfig.ResolveRef(this);
+        TbArcheryConfig.ResolveRef(this);
+        TbArcheryTarget.ResolveRef(this);
     }
 }
 
