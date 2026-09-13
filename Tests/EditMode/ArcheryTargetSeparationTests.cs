@@ -63,5 +63,30 @@ namespace LOP.MasterData.Tests
                 + $"둘이 맞닿는 거리({touching})보다 짧다 — 간격을 지켜도 겹친 과녁이 뜬다. "
                 + "#ArcheryTarget.xlsx에 큰 과녁을 넣었다면 #ArcheryConfig.xlsx의 min_separation도 같이 올려야 한다");
         }
+
+        //  비율만 올려 두고 함정 종류를 안 넣으면 함정이 영영 안 뜬다 — 에러 없이 게임만 밋밋해진다.
+        [Test]
+        public void 함정_비율이_0보다_크면_함정_종류가_적어도_하나는_있다()
+        {
+            var tables = LoadTables();
+
+            var config = tables.TbArcheryConfig.GetOrDefault(1);
+            Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
+
+            if (config.TrapRatioMax <= 0f)
+            {
+                Assert.Pass("함정 비율이 0이다 — 함정을 안 쓰기로 한 데이터");
+            }
+
+            int trapKinds = 0;
+            foreach (var row in tables.TbArcheryTarget.DataList)
+            {
+                trapKinds += row.IsTrap ? 1 : 0;
+            }
+
+            Assert.Greater(trapKinds, 0,
+                $"trap_ratio_max({config.TrapRatioMax})가 0보다 큰데 #ArcheryTarget에 is_trap=TRUE인 줄이 없다 "
+                + "— 함정이 영영 안 뜬다");
+        }
     }
 }

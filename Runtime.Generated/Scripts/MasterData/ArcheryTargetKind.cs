@@ -21,6 +21,7 @@ public sealed partial class ArcheryTargetKind : Luban.BeanBase
         Radius = _buf.ReadFloat();
         Points = _buf.ReadInt();
         Weight = _buf.ReadInt();
+        IsTrap = _buf.ReadBool();
     }
 
     public static ArcheryTargetKind DeserializeArcheryTargetKind(ByteBuf _buf)
@@ -48,6 +49,10 @@ public sealed partial class ArcheryTargetKind : Luban.BeanBase
     /// weight
     /// </summary>
     public readonly int Weight;
+    /// <summary>
+    /// is_trap
+    /// </summary>
+    public readonly bool IsTrap;
    
     public const int __ID__ = -356603237;
     public override int GetTypeId() => __ID__;
@@ -64,6 +69,7 @@ public sealed partial class ArcheryTargetKind : Luban.BeanBase
         + "radius:" + Radius + ","
         + "points:" + Points + ","
         + "weight:" + Weight + ","
+        + "isTrap:" + IsTrap + ","
         + "}";
     }
 }

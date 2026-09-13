@@ -24,6 +24,11 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         SpawnMinY = _buf.ReadFloat();
         SpawnMaxY = _buf.ReadFloat();
         MinSeparation = _buf.ReadFloat();
+        TrapRatioMin = _buf.ReadFloat();
+        TrapRatioMax = _buf.ReadFloat();
+        ShakeFreeSeconds = _buf.ReadFloat();
+        ShakeRampSeconds = _buf.ReadFloat();
+        ShakeMaxDegrees = _buf.ReadFloat();
     }
 
     public static ArcheryConfig DeserializeArcheryConfig(ByteBuf _buf)
@@ -63,6 +68,26 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
     /// min_separation
     /// </summary>
     public readonly float MinSeparation;
+    /// <summary>
+    /// trap_ratio_min
+    /// </summary>
+    public readonly float TrapRatioMin;
+    /// <summary>
+    /// trap_ratio_max
+    /// </summary>
+    public readonly float TrapRatioMax;
+    /// <summary>
+    /// shake_free_seconds
+    /// </summary>
+    public readonly float ShakeFreeSeconds;
+    /// <summary>
+    /// shake_ramp_seconds
+    /// </summary>
+    public readonly float ShakeRampSeconds;
+    /// <summary>
+    /// shake_max_degrees
+    /// </summary>
+    public readonly float ShakeMaxDegrees;
    
     public const int __ID__ = 157521944;
     public override int GetTypeId() => __ID__;
@@ -82,6 +107,11 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         + "spawnMinY:" + SpawnMinY + ","
         + "spawnMaxY:" + SpawnMaxY + ","
         + "minSeparation:" + MinSeparation + ","
+        + "trapRatioMin:" + TrapRatioMin + ","
+        + "trapRatioMax:" + TrapRatioMax + ","
+        + "shakeFreeSeconds:" + ShakeFreeSeconds + ","
+        + "shakeRampSeconds:" + ShakeRampSeconds + ","
+        + "shakeMaxDegrees:" + ShakeMaxDegrees + ","
         + "}";
     }
 }
