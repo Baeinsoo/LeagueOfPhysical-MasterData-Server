@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using Luban;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace LOP.MasterData.Tests
 {
@@ -141,6 +142,75 @@ namespace LOP.MasterData.Tests
                     $"반경 {radius}는 함정 과녁에만 있고 짝이 되는 깨끗한 과녁이 없다 — "
                     + "이 크기를 보면 무조건 함정이라고 학습할 수 있다");
             }
+        }
+
+        //  웨이브 주기가 묶음 전체를 못 덮으면 마지막 과녁이 공중에서 잘려 사라진다 —
+        //  에러는 안 나고 "가끔 과녁이 덜 뜨는" 것으로만 보인다.
+        //  ⚠️ 이 식의 원본은 LOP.ArcheryConfig.BurstTicks(LeagueOfPhysical-Shared)다.
+        //  MasterData 패키지는 Shared를 참조하지 않으므로(의도된 격리) 여기서 식을 다시
+        //  적었다 — 원본 식이 바뀌면 이 검사도 같이 고쳐야 한다.
+        [Test]
+        public void 웨이브_주기가_묶음_전체와_쉼을_덮는다()
+        {
+            var tables = LoadTables();
+            var config = tables.TbArcheryConfig.GetOrDefault(1);
+            Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
+
+            //  가장 높이 솟는 과녁이 제일 오래 떠 있다 — 그 기준으로 재야 안전하다.
+            //  중력이 화살과 같으므로 v0 = sqrt(2gH), 수명 = 2v0/g다.
+            float g = 20f;   // ArcheryTrajectory.Gravity — MasterData 패키지는 Shared를 참조하지 않는다
+            float longestLifetime = 2f * Mathf.Sqrt(2f * g * config.RiseHeightMax) / g;
+            //  틱은 정수라 올림한다 — 내림하면 마지막 한 틱이 모자라 과녁이 땅에 닿기 전에 잘린다.
+            int lifetimeTicks = Mathf.CeilToInt(longestLifetime / 0.02f);
+            int needed = (config.MaxTargets - 1) * config.StaggerTicks + lifetimeTicks + config.RestTicks;
+
+            Assert.GreaterOrEqual(
+                config.WavePeriodTicks, needed,
+                $"wave_period_ticks({config.WavePeriodTicks})가 묶음 전체({needed}틱: 마지막 과녁이 "
+                + $"{(config.MaxTargets - 1) * config.StaggerTicks}틱 뒤에 솟아 {lifetimeTicks}틱을 살고, "
+                + $"쉼 {config.RestTicks}틱)보다 짧다 — 마지막 과녁이 공중에서 잘린다");
+        }
+
+        //  과녁이 솟는 공간을 벗어나면 사대 위로 넘어오거나 화면 밖으로 나간다.
+        [Test]
+        public void 솟는_높이가_과녁_공간_안에_들어간다()
+        {
+            var tables = LoadTables();
+            var config = tables.TbArcheryConfig.GetOrDefault(1);
+            Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
+
+            //  가장 높은 자리에서 가장 높이 솟는 경우가 천장에 제일 가깝다.
+            float apex = config.SpawnMaxY + config.RiseHeightMax;
+            //  솟아오르는 만큼 천장 위로 올라가도 되는 여유(m). 화면 밖으로 나가지만 않으면 된다.
+            const float Headroom = 4f;
+            Assert.LessOrEqual(apex, config.SpawnMaxY + Headroom,
+                $"가장 높은 자리({config.SpawnMaxY})에서 {config.RiseHeightMax}m 솟으면 {apex}m다 — "
+                + "화면 밖으로 나갈 수 있다");
+        }
+
+        //  이 검사가 이 슬라이스의 생명줄이다 — 높이를 올리면 과녁이 한 틱에 자기 반지름보다
+        //  많이 움직여 화살이 뚫고 지나간다. 에러는 안 나고 "가끔 안 맞는다"로만 보인다.
+        [Test]
+        public void 가장_높이_솟는_과녁도_한_틱에_가장_작은_반지름보다_적게_움직인다()
+        {
+            var tables = LoadTables();
+            var config = tables.TbArcheryConfig.GetOrDefault(1);
+            Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
+
+            float g = 20f;   // ArcheryTrajectory.Gravity
+            float fastest = Mathf.Sqrt(2f * g * config.RiseHeightMax);
+            float perTick = fastest * 0.02f;
+
+            float smallest = float.MaxValue;
+            foreach (var row in tables.TbArcheryTarget.DataList)
+            {
+                smallest = Mathf.Min(smallest, row.Radius);
+            }
+
+            Assert.Less(perTick, smallest,
+                $"rise_height_max({config.RiseHeightMax}m)면 과녁이 한 틱에 {perTick:F3}m 움직이는데 "
+                + $"가장 작은 과녁 반지름이 {smallest:F3}m다 — 판정이 뚫린다. 높이를 낮추거나 "
+                + "가장 작은 과녁을 키워야 한다");
         }
     }
 }
