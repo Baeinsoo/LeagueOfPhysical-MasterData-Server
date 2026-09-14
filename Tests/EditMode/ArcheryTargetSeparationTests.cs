@@ -184,13 +184,14 @@ namespace LOP.MasterData.Tests
             var config = tables.TbArcheryConfig.GetOrDefault(1);
             Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
 
-            //  가장 높은 자리에서 가장 높이 솟는 경우가 천장에 제일 가깝다.
+            //  과녁이 솟아 닿는 가장 높은 지점. 무대에서 솟으므로 바닥(y=0) 기준 절대 높이다.
             float apex = config.SpawnMaxY + config.RiseHeightMax;
-            //  솟아오르는 만큼 천장 위로 올라가도 되는 여유(m). 화면 밖으로 나가지만 않으면 된다.
-            const float Headroom = 4f;
-            Assert.LessOrEqual(apex, config.SpawnMaxY + Headroom,
-                $"가장 높은 자리({config.SpawnMaxY})에서 {config.RiseHeightMax}m 솟으면 {apex}m다 — "
-                + "화면 밖으로 나갈 수 있다");
+
+            //  사수는 12m 밖에 서서 본다 — 이보다 높이 솟으면 위를 쳐다봐야 하고 화면 밖으로 나간다.
+            const float HighestVisible = 6f;
+            Assert.LessOrEqual(apex, HighestVisible,
+                $"가장 높은 자리({config.SpawnMaxY}m)에서 {config.RiseHeightMax}m 솟으면 {apex}m다 — "
+                + $"{HighestVisible}m를 넘으면 사수 화면 밖으로 나간다");
         }
 
         //  이 검사가 이 슬라이스의 생명줄이다 — 높이를 올리면 과녁이 한 틱에 자기 반지름보다
