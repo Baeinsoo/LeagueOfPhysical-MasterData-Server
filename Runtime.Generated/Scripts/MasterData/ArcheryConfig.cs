@@ -29,6 +29,10 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         ShakeFreeSeconds = _buf.ReadFloat();
         ShakeRampSeconds = _buf.ReadFloat();
         ShakeMaxDegrees = _buf.ReadFloat();
+        RiseHeightMin = _buf.ReadFloat();
+        RiseHeightMax = _buf.ReadFloat();
+        StaggerTicks = _buf.ReadInt();
+        RestTicks = _buf.ReadInt();
     }
 
     public static ArcheryConfig DeserializeArcheryConfig(ByteBuf _buf)
@@ -88,6 +92,22 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
     /// shake_max_degrees
     /// </summary>
     public readonly float ShakeMaxDegrees;
+    /// <summary>
+    /// rise_height_min
+    /// </summary>
+    public readonly float RiseHeightMin;
+    /// <summary>
+    /// rise_height_max
+    /// </summary>
+    public readonly float RiseHeightMax;
+    /// <summary>
+    /// stagger_ticks
+    /// </summary>
+    public readonly int StaggerTicks;
+    /// <summary>
+    /// rest_ticks
+    /// </summary>
+    public readonly int RestTicks;
    
     public const int __ID__ = 157521944;
     public override int GetTypeId() => __ID__;
@@ -112,6 +132,10 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         + "shakeFreeSeconds:" + ShakeFreeSeconds + ","
         + "shakeRampSeconds:" + ShakeRampSeconds + ","
         + "shakeMaxDegrees:" + ShakeMaxDegrees + ","
+        + "riseHeightMin:" + RiseHeightMin + ","
+        + "riseHeightMax:" + RiseHeightMax + ","
+        + "staggerTicks:" + StaggerTicks + ","
+        + "restTicks:" + RestTicks + ","
         + "}";
     }
 }
