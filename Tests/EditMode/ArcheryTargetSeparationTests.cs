@@ -158,7 +158,12 @@ namespace LOP.MasterData.Tests
 
             //  가장 높이 솟는 과녁이 제일 오래 떠 있다 — 그 기준으로 재야 안전하다.
             //  중력이 화살과 같으므로 v0 = sqrt(2gH), 수명 = 2v0/g다.
-            float g = 20f;   // ArcheryTrajectory.Gravity — MasterData 패키지는 Shared를 참조하지 않는다
+            //
+            //  ⚠️ 이 식의 **원본은 LOP.ArcheryConfig.BurstTicks**(LeagueOfPhysical-Shared)다.
+            //  이 패키지는 Shared를 일부러 참조하지 않으므로(클·서 격리) 같은 식을 여기 다시 적는
+            //  수밖에 없다. **저쪽을 고치면 여기도 같이 고쳐야 한다** — 안 그러면 이 검사만 낡은
+            //  기준으로 조용히 통과한다. 아래 g와 0.02(틱 간격)도 같은 이유로 베껴 온 값이다.
+            float g = 20f;   // ArcheryTrajectory.Gravity
             float longestLifetime = 2f * Mathf.Sqrt(2f * g * config.RiseHeightMax) / g;
             //  틱은 정수라 올림한다 — 내림하면 마지막 한 틱이 모자라 과녁이 땅에 닿기 전에 잘린다.
             int lifetimeTicks = Mathf.CeilToInt(longestLifetime / 0.02f);
