@@ -296,14 +296,20 @@ namespace LOP.MasterData.Tests
         {
             var tables = LoadTables();
 
+            int checked_ = 0;
             foreach (var map in tables.TbMap.DataList)
             {
                 var mode = tables.TbGameMode.GetOrDefault(map.GameModeId);
                 if (mode == null || mode.Code != "Archery") { continue; }
 
+                checked_++;
                 Assert.IsNotNull(tables.TbArcheryConfig.GetOrDefault(map.Id),
                     $"활쏘기 맵 {map.Code}(id={map.Id})에 TbArcheryConfig 행이 없다");
             }
+
+            //  활쏘기 맵이 하나도 없으면 위 반복문이 안 돌아 아무것도 안 잰 채 통과한다.
+            //  맵을 옮기다 연결이 끊겨도 이 검사가 조용히 초록이 되는 것을 막는다.
+            Assert.Greater(checked_, 0, "활쏘기 맵이 하나도 없다 — TbMap의 game_mode_id 연결을 확인할 것");
         }
     }
 }
