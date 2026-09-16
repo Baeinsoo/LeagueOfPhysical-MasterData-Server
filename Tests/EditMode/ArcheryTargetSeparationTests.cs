@@ -218,5 +218,71 @@ namespace LOP.MasterData.Tests
                 + $"가장 작은 과녁 반지름이 {smallest:F3}m다 — 판정이 뚫린다. 높이를 낮추거나 "
                 + "가장 작은 과녁을 키워야 한다");
         }
+
+        //  띠가 중심부터 가장자리까지 빈틈없이 덮어야 한다. 마지막 띠가 1에 못 미치면
+        //  가장자리에 맞은 화살이 어느 띠에도 안 걸려 점수가 0이 된다 — 에러는 안 난다.
+        [Test]
+        public void 모든_과녁의_띠가_가장자리까지_덮는다()
+        {
+            var tables = LoadTables();
+
+            foreach (var target in tables.TbArcheryTarget.DataList)
+            {
+                var edges = new List<float>();
+                foreach (var ring in tables.TbArcheryRing.DataList)
+                {
+                    if (ring.TargetId == target.Id) { edges.Add(ring.OuterRatio); }
+                }
+
+                Assert.IsNotEmpty(edges, $"과녁 {target.Code}(id={target.Id})에 띠가 하나도 없다");
+                edges.Sort();
+                Assert.AreEqual(1f, edges[edges.Count - 1], 1e-4f,
+                    $"과녁 {target.Code}의 마지막 띠가 가장자리(1.0)까지 안 간다");
+                Assert.Greater(edges[0], 0f, $"과녁 {target.Code}의 첫 띠 경계가 0 이하다");
+            }
+        }
+
+        //  공은 겉면에 맞으므로 "중심에서 얼마나 벗어났나"가 늘 1에 가깝다 — 띠를 여러 개 줘도
+        //  바깥 띠만 걸린다. 그런 데이터는 적은 사람의 뜻과 다르게 동작하므로 막는다.
+        [Test]
+        public void 공_과녁은_띠가_하나뿐이다()
+        {
+            var tables = LoadTables();
+
+            foreach (var target in tables.TbArcheryTarget.DataList)
+            {
+                if (target.Shape != 0) { continue; }   // 0 = Sphere
+
+                int count = 0;
+                foreach (var ring in tables.TbArcheryRing.DataList)
+                {
+                    if (ring.TargetId == target.Id) { count++; }
+                }
+
+                Assert.AreEqual(1, count,
+                    $"공 과녁 {target.Code}에 띠가 {count}개다 — 공은 맞은 자리를 가릴 수 없다");
+            }
+        }
+
+        //  띠가 하나인 과녁은 그 점수가 대표 점수와 같아야 한다. 다르면 "띠 데이터가 없을 때"와
+        //  "있을 때"의 점수가 갈리는데, 코드는 둘 다 정상으로 받아들여 조용히 다르게 동작한다.
+        [Test]
+        public void 띠가_하나인_과녁은_그_점수가_대표_점수와_같다()
+        {
+            var tables = LoadTables();
+
+            foreach (var target in tables.TbArcheryTarget.DataList)
+            {
+                var points = new List<int>();
+                foreach (var ring in tables.TbArcheryRing.DataList)
+                {
+                    if (ring.TargetId == target.Id) { points.Add(ring.Points); }
+                }
+                if (points.Count != 1) { continue; }
+
+                Assert.AreEqual(target.Points, points[0],
+                    $"과녁 {target.Code}의 띠 점수({points[0]})가 대표 점수({target.Points})와 다르다");
+            }
+        }
     }
 }
