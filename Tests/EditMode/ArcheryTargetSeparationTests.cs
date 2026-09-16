@@ -23,6 +23,10 @@ namespace LOP.MasterData.Tests
         private const string StreamingAssetsRelative =
             "Packages/com.baegames.lop.masterdata.server/Runtime.Generated/StreamingAssets/MasterData";
 
+        //  설정 행의 id가 맵 id로 바뀌었다(활쏘기 맵마다 한 행). 이 파일의 검사들은 지금
+        //  존재하는 유일한 활쏘기 맵인 원형 맵(id=5) 행을 기준으로 잰다.
+        private const int CircleMapId = 5;
+
         private static Tables LoadTables()
         {
             string dir = Path.GetFullPath(StreamingAssetsRelative);
@@ -41,8 +45,8 @@ namespace LOP.MasterData.Tests
         {
             var tables = LoadTables();
 
-            var config = tables.TbArcheryConfig.GetOrDefault(1);
-            Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
+            var config = tables.TbArcheryConfig.GetOrDefault(CircleMapId);
+            Assert.IsNotNull(config, "TbArcheryConfig 원형 맵(id=5) 행이 없다");
 
             var rows = tables.TbArcheryTarget.DataList;
             Assert.IsNotEmpty(rows, "TbArcheryTarget이 비어 있다 — 과녁 종류가 없으면 웨이브가 영원히 빈다");
@@ -72,8 +76,8 @@ namespace LOP.MasterData.Tests
         {
             var tables = LoadTables();
 
-            var config = tables.TbArcheryConfig.GetOrDefault(1);
-            Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
+            var config = tables.TbArcheryConfig.GetOrDefault(CircleMapId);
+            Assert.IsNotNull(config, "TbArcheryConfig 원형 맵(id=5) 행이 없다");
 
             if (config.TrapRatioMax <= 0f)
             {
@@ -153,8 +157,8 @@ namespace LOP.MasterData.Tests
         public void 웨이브_주기가_묶음_전체와_쉼을_덮는다()
         {
             var tables = LoadTables();
-            var config = tables.TbArcheryConfig.GetOrDefault(1);
-            Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
+            var config = tables.TbArcheryConfig.GetOrDefault(CircleMapId);
+            Assert.IsNotNull(config, "TbArcheryConfig 원형 맵(id=5) 행이 없다");
 
             //  가장 높이 솟는 과녁이 제일 오래 떠 있다 — 그 기준으로 재야 안전하다.
             //  중력이 화살과 같으므로 v0 = sqrt(2gH), 수명 = 2v0/g다.
@@ -181,8 +185,8 @@ namespace LOP.MasterData.Tests
         public void 솟는_높이가_과녁_공간_안에_들어간다()
         {
             var tables = LoadTables();
-            var config = tables.TbArcheryConfig.GetOrDefault(1);
-            Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
+            var config = tables.TbArcheryConfig.GetOrDefault(CircleMapId);
+            Assert.IsNotNull(config, "TbArcheryConfig 원형 맵(id=5) 행이 없다");
 
             //  과녁이 솟아 닿는 가장 높은 지점. 무대에서 솟으므로 바닥(y=0) 기준 절대 높이다.
             float apex = config.SpawnMaxY + config.RiseHeightMax;
@@ -200,8 +204,8 @@ namespace LOP.MasterData.Tests
         public void 가장_높이_솟는_과녁도_한_틱에_가장_작은_반지름보다_적게_움직인다()
         {
             var tables = LoadTables();
-            var config = tables.TbArcheryConfig.GetOrDefault(1);
-            Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
+            var config = tables.TbArcheryConfig.GetOrDefault(CircleMapId);
+            Assert.IsNotNull(config, "TbArcheryConfig 원형 맵(id=5) 행이 없다");
 
             float g = 20f;   // ArcheryTrajectory.Gravity
             float fastest = Mathf.Sqrt(2f * g * config.RiseHeightMax);
@@ -282,6 +286,23 @@ namespace LOP.MasterData.Tests
 
                 Assert.AreEqual(target.Points, points[0],
                     $"과녁 {target.Code}의 띠 점수({points[0]})가 대표 점수({target.Points})와 다르다");
+            }
+        }
+
+        //  활쏘기 맵을 새로 추가하면서 설정 행을 안 넣으면, 방에 들어가야 예외를 본다.
+        //  여기서 먼저 막는다.
+        [Test]
+        public void 활쏘기_맵마다_설정_행이_있다()
+        {
+            var tables = LoadTables();
+
+            foreach (var map in tables.TbMap.DataList)
+            {
+                var mode = tables.TbGameMode.GetOrDefault(map.GameModeId);
+                if (mode == null || mode.Code != "Archery") { continue; }
+
+                Assert.IsNotNull(tables.TbArcheryConfig.GetOrDefault(map.Id),
+                    $"활쏘기 맵 {map.Code}(id={map.Id})에 TbArcheryConfig 행이 없다");
             }
         }
     }
