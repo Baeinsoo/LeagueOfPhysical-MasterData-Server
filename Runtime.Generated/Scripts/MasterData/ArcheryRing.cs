@@ -12,22 +12,19 @@ using Luban;
 
 namespace LOP.MasterData
 {
-public sealed partial class ArcheryTargetKind : Luban.BeanBase
+public sealed partial class ArcheryRing : Luban.BeanBase
 {
-    public ArcheryTargetKind(ByteBuf _buf) 
+    public ArcheryRing(ByteBuf _buf) 
     {
         Id = _buf.ReadInt();
-        Code = _buf.ReadString();
-        Radius = _buf.ReadFloat();
+        TargetId = _buf.ReadInt();
+        OuterRatio = _buf.ReadFloat();
         Points = _buf.ReadInt();
-        Weight = _buf.ReadInt();
-        IsTrap = _buf.ReadBool();
-        Shape = _buf.ReadInt();
     }
 
-    public static ArcheryTargetKind DeserializeArcheryTargetKind(ByteBuf _buf)
+    public static ArcheryRing DeserializeArcheryRing(ByteBuf _buf)
     {
-        return new ArcheryTargetKind(_buf);
+        return new ArcheryRing(_buf);
     }
 
     /// <summary>
@@ -35,31 +32,19 @@ public sealed partial class ArcheryTargetKind : Luban.BeanBase
     /// </summary>
     public readonly int Id;
     /// <summary>
-    /// code
+    /// target_id
     /// </summary>
-    public readonly string Code;
+    public readonly int TargetId;
     /// <summary>
-    /// radius
+    /// outer_ratio
     /// </summary>
-    public readonly float Radius;
+    public readonly float OuterRatio;
     /// <summary>
     /// points
     /// </summary>
     public readonly int Points;
-    /// <summary>
-    /// weight
-    /// </summary>
-    public readonly int Weight;
-    /// <summary>
-    /// is_trap
-    /// </summary>
-    public readonly bool IsTrap;
-    /// <summary>
-    /// shape
-    /// </summary>
-    public readonly int Shape;
    
-    public const int __ID__ = -356603237;
+    public const int __ID__ = -924533626;
     public override int GetTypeId() => __ID__;
 
     public  void ResolveRef(Tables tables)
@@ -70,12 +55,9 @@ public sealed partial class ArcheryTargetKind : Luban.BeanBase
     {
         return "{ "
         + "id:" + Id + ","
-        + "code:" + Code + ","
-        + "radius:" + Radius + ","
+        + "targetId:" + TargetId + ","
+        + "outerRatio:" + OuterRatio + ","
         + "points:" + Points + ","
-        + "weight:" + Weight + ","
-        + "isTrap:" + IsTrap + ","
-        + "shape:" + Shape + ","
         + "}";
     }
 }

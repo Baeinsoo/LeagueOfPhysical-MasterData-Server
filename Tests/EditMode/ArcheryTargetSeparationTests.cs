@@ -23,6 +23,10 @@ namespace LOP.MasterData.Tests
         private const string StreamingAssetsRelative =
             "Packages/com.baegames.lop.masterdata.server/Runtime.Generated/StreamingAssets/MasterData";
 
+        //  설정 행의 id가 맵 id로 바뀌었다(활쏘기 맵마다 한 행). 이 파일의 검사들은 지금
+        //  존재하는 유일한 활쏘기 맵인 원형 맵(id=5) 행을 기준으로 잰다.
+        private const int CircleMapId = 5;
+
         private static Tables LoadTables()
         {
             string dir = Path.GetFullPath(StreamingAssetsRelative);
@@ -41,8 +45,8 @@ namespace LOP.MasterData.Tests
         {
             var tables = LoadTables();
 
-            var config = tables.TbArcheryConfig.GetOrDefault(1);
-            Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
+            var config = tables.TbArcheryConfig.GetOrDefault(CircleMapId);
+            Assert.IsNotNull(config, "TbArcheryConfig 원형 맵(id=5) 행이 없다");
 
             var rows = tables.TbArcheryTarget.DataList;
             Assert.IsNotEmpty(rows, "TbArcheryTarget이 비어 있다 — 과녁 종류가 없으면 웨이브가 영원히 빈다");
@@ -72,8 +76,8 @@ namespace LOP.MasterData.Tests
         {
             var tables = LoadTables();
 
-            var config = tables.TbArcheryConfig.GetOrDefault(1);
-            Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
+            var config = tables.TbArcheryConfig.GetOrDefault(CircleMapId);
+            Assert.IsNotNull(config, "TbArcheryConfig 원형 맵(id=5) 행이 없다");
 
             if (config.TrapRatioMax <= 0f)
             {
@@ -153,8 +157,8 @@ namespace LOP.MasterData.Tests
         public void 웨이브_주기가_묶음_전체와_쉼을_덮는다()
         {
             var tables = LoadTables();
-            var config = tables.TbArcheryConfig.GetOrDefault(1);
-            Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
+            var config = tables.TbArcheryConfig.GetOrDefault(CircleMapId);
+            Assert.IsNotNull(config, "TbArcheryConfig 원형 맵(id=5) 행이 없다");
 
             //  가장 높이 솟는 과녁이 제일 오래 떠 있다 — 그 기준으로 재야 안전하다.
             //  중력이 화살과 같으므로 v0 = sqrt(2gH), 수명 = 2v0/g다.
@@ -181,8 +185,8 @@ namespace LOP.MasterData.Tests
         public void 솟는_높이가_과녁_공간_안에_들어간다()
         {
             var tables = LoadTables();
-            var config = tables.TbArcheryConfig.GetOrDefault(1);
-            Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
+            var config = tables.TbArcheryConfig.GetOrDefault(CircleMapId);
+            Assert.IsNotNull(config, "TbArcheryConfig 원형 맵(id=5) 행이 없다");
 
             //  과녁이 솟아 닿는 가장 높은 지점. 무대에서 솟으므로 바닥(y=0) 기준 절대 높이다.
             float apex = config.SpawnMaxY + config.RiseHeightMax;
@@ -200,8 +204,8 @@ namespace LOP.MasterData.Tests
         public void 가장_높이_솟는_과녁도_한_틱에_가장_작은_반지름보다_적게_움직인다()
         {
             var tables = LoadTables();
-            var config = tables.TbArcheryConfig.GetOrDefault(1);
-            Assert.IsNotNull(config, "TbArcheryConfig id=1 행이 없다");
+            var config = tables.TbArcheryConfig.GetOrDefault(CircleMapId);
+            Assert.IsNotNull(config, "TbArcheryConfig 원형 맵(id=5) 행이 없다");
 
             float g = 20f;   // ArcheryTrajectory.Gravity
             float fastest = Mathf.Sqrt(2f * g * config.RiseHeightMax);
@@ -217,6 +221,95 @@ namespace LOP.MasterData.Tests
                 $"rise_height_max({config.RiseHeightMax}m)면 과녁이 한 틱에 {perTick:F3}m 움직이는데 "
                 + $"가장 작은 과녁 반지름이 {smallest:F3}m다 — 판정이 뚫린다. 높이를 낮추거나 "
                 + "가장 작은 과녁을 키워야 한다");
+        }
+
+        //  띠가 중심부터 가장자리까지 빈틈없이 덮어야 한다. 마지막 띠가 1에 못 미치면
+        //  가장자리에 맞은 화살이 어느 띠에도 안 걸려 점수가 0이 된다 — 에러는 안 난다.
+        [Test]
+        public void 모든_과녁의_띠가_가장자리까지_덮는다()
+        {
+            var tables = LoadTables();
+
+            foreach (var target in tables.TbArcheryTarget.DataList)
+            {
+                var edges = new List<float>();
+                foreach (var ring in tables.TbArcheryRing.DataList)
+                {
+                    if (ring.TargetId == target.Id) { edges.Add(ring.OuterRatio); }
+                }
+
+                Assert.IsNotEmpty(edges, $"과녁 {target.Code}(id={target.Id})에 띠가 하나도 없다");
+                edges.Sort();
+                Assert.AreEqual(1f, edges[edges.Count - 1], 1e-4f,
+                    $"과녁 {target.Code}의 마지막 띠가 가장자리(1.0)까지 안 간다");
+                Assert.Greater(edges[0], 0f, $"과녁 {target.Code}의 첫 띠 경계가 0 이하다");
+            }
+        }
+
+        //  공은 겉면에 맞으므로 "중심에서 얼마나 벗어났나"가 늘 1에 가깝다 — 띠를 여러 개 줘도
+        //  바깥 띠만 걸린다. 그런 데이터는 적은 사람의 뜻과 다르게 동작하므로 막는다.
+        [Test]
+        public void 공_과녁은_띠가_하나뿐이다()
+        {
+            var tables = LoadTables();
+
+            foreach (var target in tables.TbArcheryTarget.DataList)
+            {
+                if (target.Shape != 0) { continue; }   // 0 = Sphere
+
+                int count = 0;
+                foreach (var ring in tables.TbArcheryRing.DataList)
+                {
+                    if (ring.TargetId == target.Id) { count++; }
+                }
+
+                Assert.AreEqual(1, count,
+                    $"공 과녁 {target.Code}에 띠가 {count}개다 — 공은 맞은 자리를 가릴 수 없다");
+            }
+        }
+
+        //  띠가 하나인 과녁은 그 점수가 대표 점수와 같아야 한다. 다르면 "띠 데이터가 없을 때"와
+        //  "있을 때"의 점수가 갈리는데, 코드는 둘 다 정상으로 받아들여 조용히 다르게 동작한다.
+        [Test]
+        public void 띠가_하나인_과녁은_그_점수가_대표_점수와_같다()
+        {
+            var tables = LoadTables();
+
+            foreach (var target in tables.TbArcheryTarget.DataList)
+            {
+                var points = new List<int>();
+                foreach (var ring in tables.TbArcheryRing.DataList)
+                {
+                    if (ring.TargetId == target.Id) { points.Add(ring.Points); }
+                }
+                if (points.Count != 1) { continue; }
+
+                Assert.AreEqual(target.Points, points[0],
+                    $"과녁 {target.Code}의 띠 점수({points[0]})가 대표 점수({target.Points})와 다르다");
+            }
+        }
+
+        //  활쏘기 맵을 새로 추가하면서 설정 행을 안 넣으면, 방에 들어가야 예외를 본다.
+        //  여기서 먼저 막는다.
+        [Test]
+        public void 활쏘기_맵마다_설정_행이_있다()
+        {
+            var tables = LoadTables();
+
+            int checked_ = 0;
+            foreach (var map in tables.TbMap.DataList)
+            {
+                var mode = tables.TbGameMode.GetOrDefault(map.GameModeId);
+                if (mode == null || mode.Code != "Archery") { continue; }
+
+                checked_++;
+                Assert.IsNotNull(tables.TbArcheryConfig.GetOrDefault(map.Id),
+                    $"활쏘기 맵 {map.Code}(id={map.Id})에 TbArcheryConfig 행이 없다");
+            }
+
+            //  활쏘기 맵이 하나도 없으면 위 반복문이 안 돌아 아무것도 안 잰 채 통과한다.
+            //  맵을 옮기다 연결이 끊겨도 이 검사가 조용히 초록이 되는 것을 막는다.
+            Assert.Greater(checked_, 0, "활쏘기 맵이 하나도 없다 — TbMap의 game_mode_id 연결을 확인할 것");
         }
     }
 }
