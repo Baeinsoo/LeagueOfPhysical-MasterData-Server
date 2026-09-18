@@ -436,6 +436,38 @@ namespace LOP.MasterData.Tests
             Assert.Greater(checkedMaps, 0, "사거리 코스 맵이 하나도 없다 — 아무것도 재지 못했다");
         }
 
+        //  판정이 "한 틱 동안 과녁이 멈춘 것으로 봐도 된다"는 전제로 돌아간다(ArcheryHitSystem 참고).
+        //  솟는 과녁의 위아래 움직임뿐 아니라 사거리 과녁의 좌우 흔들림도 같은 전제를 쓴다 —
+        //  삼각파라 속도가 일정하므로(방향이 꺾이는 순간만 빼면) 최고 속도는 2×span/period다.
+        [Test]
+        public void 좌우로_흔드는_과녁도_한_틱에_판_반지름보다_적게_움직인다()
+        {
+            var tables = LoadTables();
+            int checkedRows = 0;
+
+            foreach (var row in tables.TbArcheryRange.DataList)
+            {
+                if (row.LateralSpanM <= 0f) { continue; }   // 안 흔드는 자리는 잴 것이 없다
+                checkedRows++;
+
+                var config = tables.TbArcheryConfig.GetOrDefault(row.MapId);
+                Assert.IsNotNull(config, $"맵 {row.MapId}의 TbArcheryConfig 행이 없다");
+                var faceKind = tables.TbArcheryTarget.GetOrDefault(config.RangeTargetId);
+                Assert.IsNotNull(faceKind, $"맵 {row.MapId}의 range_target_id가 TbArcheryTarget에 없다");
+
+                //  삼각파 최고 속도 = 2 x (span/period) — 반 주기에 폭의 두 배(끝→반대 끝→제자리
+                //  중 절반)를 오가므로. ArcheryTargetMotion.TriangleWave와 같은 식이다.
+                float maxSpeed = 2f * row.LateralSpanM / row.LateralPeriodS;
+                float perTick = maxSpeed * TickSeconds;
+
+                Assert.Less(perTick, faceKind.Radius,
+                    $"맵 {row.MapId} 자리 {row.StandIndex}: 폭 {row.LateralSpanM}m/주기 {row.LateralPeriodS}초면 "
+                    + $"한 틱에 {perTick:F3}m 움직이는데 판 반지름은 {faceKind.Radius:F3}m다 — 판정이 뚫릴 수 있다");
+            }
+
+            Assert.Greater(checkedRows, 0, "흔드는 사거리 과녁이 하나도 없다 — 아무것도 재지 못했다");
+        }
+
         [Test]
         public void 판_과녁의_띠가_0부터_1까지_빈틈없이_덮는다()
         {
