@@ -443,12 +443,18 @@ namespace LOP.MasterData.Tests
         public void 좌우로_흔드는_과녁도_한_틱에_판_반지름보다_적게_움직인다()
         {
             var tables = LoadTables();
-            int checkedRows = 0;
+
+            //  ⚠️ 이 시험은 원래 "흔드는 자리가 하나도 없으면 실패"로 공허 통과를 막았다.
+            //  2026-09-19에 좌우 이동을 **설계 판단으로** 껐다(조준 실력을 타이밍이 아니라
+            //  겨누기로 두기로 해서 — lateral_span_m 전부 0). 그래서 그 단언은 이제 *거짓을
+            //  주장하는* 것이 된다. 공허 통과 방지는 **표가 실제로 로드되는가**로 옮기고,
+            //  한 틱 이동량 검사는 그대로 둔다 — 누가 폭을 다시 넣는 순간 다시 걸린다.
+            Assert.Greater(tables.TbArcheryRange.DataList.Count, 0,
+                "TbArcheryRange가 비었다 — 표가 안 실렸거나 생성이 깨졌다");
 
             foreach (var row in tables.TbArcheryRange.DataList)
             {
                 if (row.LateralSpanM <= 0f) { continue; }   // 안 흔드는 자리는 잴 것이 없다
-                checkedRows++;
 
                 var config = tables.TbArcheryConfig.GetOrDefault(row.MapId);
                 Assert.IsNotNull(config, $"맵 {row.MapId}의 TbArcheryConfig 행이 없다");
@@ -464,8 +470,6 @@ namespace LOP.MasterData.Tests
                     $"맵 {row.MapId} 자리 {row.StandIndex}: 폭 {row.LateralSpanM}m/주기 {row.LateralPeriodS}초면 "
                     + $"한 틱에 {perTick:F3}m 움직이는데 판 반지름은 {faceKind.Radius:F3}m다 — 판정이 뚫릴 수 있다");
             }
-
-            Assert.Greater(checkedRows, 0, "흔드는 사거리 과녁이 하나도 없다 — 아무것도 재지 못했다");
         }
 
         [Test]
