@@ -37,7 +37,7 @@ namespace LOP.MasterData.Tests
             Assert.IsNotNull(config, "TbFlappyConfig id=1 행이 없다");
 
             const string hint = " — 엑셀 열 순서가 바뀌었을 수 있다";
-            Assert.AreEqual(11f, config.ForwardSpeed, "ForwardSpeed" + hint);
+            Assert.AreEqual(4.7f, config.ForwardSpeed, "ForwardSpeed" + hint);
             Assert.AreEqual(18.6f, config.FlapImpulse, "FlapImpulse" + hint);
             Assert.AreEqual(59f, config.Gravity, "Gravity" + hint);
             Assert.AreEqual(30f, config.MaxFallSpeed, "MaxFallSpeed" + hint);
