@@ -40,6 +40,20 @@ namespace LOP.MasterData.Tests
             });
         }
 
+        //  웨이브가 실제로 뽑을 수 있는 종류만 잰다. 가중치 0은 뽑기에서 절대 안 걸리며
+        //  (PickKind가 가중치 합으로 고른다), 사거리 맵이 id로 집어 쓰는 판 과녁이 그것이다.
+        //  이 필터가 없으면 사거리용 큰 과녁 한 줄 때문에 원형 맵 규칙이 깨졌다고 잘못 잡는다.
+        private static List<ArcheryTargetKind> WaveDrawableKinds(Tables tables)
+        {
+            var drawable = new List<ArcheryTargetKind>();
+            foreach (var row in tables.TbArcheryTarget.DataList)
+            {
+                if (row.Weight > 0) { drawable.Add(row); }
+            }
+            Assert.IsNotEmpty(drawable, "웨이브가 뽑을 수 있는 과녁 종류가 하나도 없다 — 웨이브가 영원히 빈다");
+            return drawable;
+        }
+
         [Test]
         public void 간격_기준이_가장_큰_과녁_둘을_떼어놓을_만큼은_된다()
         {
@@ -48,8 +62,7 @@ namespace LOP.MasterData.Tests
             var config = tables.TbArcheryConfig.GetOrDefault(CircleMapId);
             Assert.IsNotNull(config, "TbArcheryConfig 원형 맵(id=5) 행이 없다");
 
-            var rows = tables.TbArcheryTarget.DataList;
-            Assert.IsNotEmpty(rows, "TbArcheryTarget이 비어 있다 — 과녁 종류가 없으면 웨이브가 영원히 빈다");
+            var rows = WaveDrawableKinds(tables);
 
             float largestRadius = 0f;
             string largestCode = null;
@@ -85,7 +98,7 @@ namespace LOP.MasterData.Tests
             }
 
             int trapKinds = 0;
-            foreach (var row in tables.TbArcheryTarget.DataList)
+            foreach (var row in WaveDrawableKinds(tables))
             {
                 trapKinds += row.IsTrap ? 1 : 0;
             }
@@ -102,8 +115,7 @@ namespace LOP.MasterData.Tests
         public void 함정과_깨끗한_과녁이_반경별로_같은_가중치를_공유한다()
         {
             var tables = LoadTables();
-            var rows = tables.TbArcheryTarget.DataList;
-            Assert.IsNotEmpty(rows, "TbArcheryTarget이 비어 있다 — 과녁 종류가 없으면 웨이브가 영원히 빈다");
+            var rows = WaveDrawableKinds(tables);
 
             Dictionary<float, List<int>> CleanOrTrapWeightsByRadius(bool isTrap)
             {
@@ -310,6 +322,147 @@ namespace LOP.MasterData.Tests
             //  활쏘기 맵이 하나도 없으면 위 반복문이 안 돌아 아무것도 안 잰 채 통과한다.
             //  맵을 옮기다 연결이 끊겨도 이 검사가 조용히 초록이 되는 것을 막는다.
             Assert.Greater(checked_, 0, "활쏘기 맵이 하나도 없다 — TbMap의 game_mode_id 연결을 확인할 것");
+        }
+
+        //  화살 속도·중력의 원본은 LOP-Shared다 — MasterData 패키지는 Shared를 참조하지 않으므로
+        //  (클·서 격리) 여기에 베껴 둘 수밖에 없다. 원본이 바뀌면 이 둘도 같이 고쳐야 한다.
+        //    원본: LOP.ArcheryAimSystem.MaxSpeed = 65f, LOP.ArcheryTrajectory.Gravity = 20f,
+        //          LOP.ArcheryAimSystem.FullDrawSeconds = 0.8f
+        private const float ArrowMaxSpeed = 65f;
+        private const float ArrowGravity = 20f;
+        private const float FullDrawSeconds = 0.8f;
+        private const float TickSeconds = 0.02f;
+
+        private const int RangeMapId = 6;
+
+        [Test]
+        public void 사거리_맵의_거리가_빈틈없이_0부터_이어진다()
+        {
+            var tables = LoadTables();
+            int checkedMaps = 0;
+
+            foreach (var config in tables.TbArcheryConfig.DataList)
+            {
+                if (config.CourseKind != 1) { continue; }
+                checkedMaps++;
+
+                var indices = new List<int>();
+                foreach (var row in tables.TbArcheryRange.DataList)
+                {
+                    if (row.MapId == config.Id) { indices.Add(row.StandIndex); }
+                }
+                indices.Sort();
+
+                Assert.IsNotEmpty(indices,
+                    $"맵 {config.Id}은 사거리 코스인데 TbArcheryRange에 줄이 하나도 없다 — 과녁이 영영 안 뜬다");
+                for (int i = 0; i < indices.Count; i++)
+                {
+                    Assert.AreEqual(i, indices[i],
+                        $"맵 {config.Id}의 stand_index가 0부터 빈틈없이 이어지지 않는다: "
+                        + string.Join(",", indices) + " — 씬의 과녁 자리 번호와 짝이 안 맞는다");
+                }
+            }
+
+            Assert.Greater(checkedMaps, 0,
+                "사거리 코스 맵이 하나도 없다 — 이 시험은 아무것도 재지 못했다. "
+                + "#ArcheryConfig.xlsx의 course_kind를 확인할 것");
+        }
+
+        [Test]
+        public void 사거리_과녁이_꽉_당겨도_닿는_거리에_있다()
+        {
+            var tables = LoadTables();
+            //  45도로 꽉 당겨 쏜 최대 사거리. 여기가 물리적인 벽이다.
+            float maxRange = ArrowMaxSpeed * ArrowMaxSpeed / ArrowGravity;   // 211.25m
+            //  벽에 딱 붙이면 각도가 1도만 어긋나도 못 닿는다 — 8할까지만 쓴다.
+            float usable = maxRange * 0.8f;
+
+            int checkedRows = 0;
+            foreach (var row in tables.TbArcheryRange.DataList)
+            {
+                checkedRows++;
+                Assert.LessOrEqual(row.DistanceM, usable,
+                    $"거리 {row.DistanceM}m(맵 {row.MapId}, 자리 {row.StandIndex})는 "
+                    + $"쓸 수 있는 사거리 {usable:0.#}m를 넘는다 — 그 과녁은 영영 못 맞히는데 에러도 안 난다");
+            }
+            Assert.Greater(checkedRows, 0, "TbArcheryRange가 비어 있다 — 아무것도 재지 못했다");
+        }
+
+        [Test]
+        public void 노출_시간이_당기고_날아갈_시간보다_길다()
+        {
+            var tables = LoadTables();
+            int checkedRows = 0;
+
+            foreach (var row in tables.TbArcheryRange.DataList)
+            {
+                checkedRows++;
+                //  45도로 꽉 당겨 쏘면 수평 속도는 65 × cos45 다. 그 거리까지 가는 데 걸리는 시간.
+                float horizontalSpeed = ArrowMaxSpeed * Mathf.Cos(45f * Mathf.Deg2Rad);
+                float flight = row.DistanceM / horizontalSpeed;
+                float needed = FullDrawSeconds + flight;
+                float exposure = row.ExposureTicks * TickSeconds;
+
+                Assert.Greater(exposure, needed,
+                    $"맵 {row.MapId} 자리 {row.StandIndex}({row.DistanceM}m)의 노출 {exposure:0.##}초는 "
+                    + $"꽉 당기고({FullDrawSeconds}초) 날아가는 데({flight:0.##}초) 걸리는 {needed:0.##}초보다 짧다 "
+                    + "— 물리적으로 못 맞히는 과녁이 된다");
+            }
+            Assert.Greater(checkedRows, 0, "TbArcheryRange가 비어 있다 — 아무것도 재지 못했다");
+        }
+
+        [Test]
+        public void 사거리_맵이_가리키는_과녁_종류가_판이고_웨이브에는_안_뜬다()
+        {
+            var tables = LoadTables();
+            int checkedMaps = 0;
+
+            foreach (var config in tables.TbArcheryConfig.DataList)
+            {
+                if (config.CourseKind != 1) { continue; }
+                checkedMaps++;
+
+                var kind = tables.TbArcheryTarget.GetOrDefault(config.RangeTargetId);
+                Assert.IsNotNull(kind,
+                    $"맵 {config.Id}의 range_target_id({config.RangeTargetId})가 TbArcheryTarget에 없다");
+                Assert.AreEqual(1, kind.Shape,
+                    $"사거리 과녁 '{kind.Code}'는 판(shape=1)이어야 한다 — 공은 맞은 자리가 늘 가장자리라 "
+                    + "띠 점수가 뜻을 잃는다");
+                Assert.AreEqual(0, kind.Weight,
+                    $"사거리 과녁 '{kind.Code}'의 가중치가 0이 아니다 — 원형 맵 웨이브가 이 판을 뽑아 "
+                    + "허공에 세운다");
+            }
+
+            Assert.Greater(checkedMaps, 0, "사거리 코스 맵이 하나도 없다 — 아무것도 재지 못했다");
+        }
+
+        [Test]
+        public void 판_과녁의_띠가_0부터_1까지_빈틈없이_덮는다()
+        {
+            var tables = LoadTables();
+            int checkedKinds = 0;
+
+            foreach (var kind in tables.TbArcheryTarget.DataList)
+            {
+                var bands = new List<ArcheryRing>();
+                foreach (var ring in tables.TbArcheryRing.DataList)
+                {
+                    if (ring.TargetId == kind.Id) { bands.Add(ring); }
+                }
+                if (bands.Count == 0) { continue; }
+
+                checkedKinds++;
+                bands.Sort((a, b) => a.OuterRatio.CompareTo(b.OuterRatio));
+                Assert.AreEqual(1f, bands[bands.Count - 1].OuterRatio, 1e-4f,
+                    $"과녁 '{kind.Code}'의 바깥 띠가 1.0이 아니다 — 가장자리를 맞히면 점수가 엉뚱해진다");
+                for (int i = 0; i < bands.Count; i++)
+                {
+                    Assert.Greater(bands[i].OuterRatio, 0f,
+                        $"과녁 '{kind.Code}'에 바깥 경계가 0 이하인 띠가 있다 — 그 띠는 영영 안 걸린다");
+                }
+            }
+
+            Assert.Greater(checkedKinds, 0, "띠가 달린 과녁이 하나도 없다 — 아무것도 재지 못했다");
         }
     }
 }

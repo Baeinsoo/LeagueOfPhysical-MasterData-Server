@@ -81,6 +81,10 @@ public partial class Tables
     /// ArcheryRing(과녁 동심원 띠)
     /// </summary>
     public TbArcheryRing TbArcheryRing {get; }
+    /// <summary>
+    /// ArcheryRange(사거리 맵의 거리별 노출)
+    /// </summary>
+    public TbArcheryRange TbArcheryRange {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
@@ -101,6 +105,7 @@ public partial class Tables
         TbArcheryConfig = new TbArcheryConfig(loader("tbarcheryconfig"));
         TbArcheryTarget = new TbArcheryTarget(loader("tbarcherytarget"));
         TbArcheryRing = new TbArcheryRing(loader("tbarcheryring"));
+        TbArcheryRange = new TbArcheryRange(loader("tbarcheryrange"));
         ResolveRef();
     }
     
@@ -123,6 +128,7 @@ public partial class Tables
         TbArcheryConfig.ResolveRef(this);
         TbArcheryTarget.ResolveRef(this);
         TbArcheryRing.ResolveRef(this);
+        TbArcheryRange.ResolveRef(this);
     }
 }
 

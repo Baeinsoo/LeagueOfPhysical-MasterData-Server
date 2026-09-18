@@ -33,6 +33,10 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         RiseHeightMax = _buf.ReadFloat();
         StaggerTicks = _buf.ReadInt();
         RestTicks = _buf.ReadInt();
+        CourseKind = _buf.ReadInt();
+        RangeTargetId = _buf.ReadInt();
+        StepGapTicks = _buf.ReadInt();
+        MatchDurationTicks = _buf.ReadInt();
     }
 
     public static ArcheryConfig DeserializeArcheryConfig(ByteBuf _buf)
@@ -108,6 +112,22 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
     /// rest_ticks
     /// </summary>
     public readonly int RestTicks;
+    /// <summary>
+    /// course_kind
+    /// </summary>
+    public readonly int CourseKind;
+    /// <summary>
+    /// range_target_id
+    /// </summary>
+    public readonly int RangeTargetId;
+    /// <summary>
+    /// step_gap_ticks
+    /// </summary>
+    public readonly int StepGapTicks;
+    /// <summary>
+    /// match_duration_ticks
+    /// </summary>
+    public readonly int MatchDurationTicks;
    
     public const int __ID__ = 157521944;
     public override int GetTypeId() => __ID__;
@@ -136,6 +156,10 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         + "riseHeightMax:" + RiseHeightMax + ","
         + "staggerTicks:" + StaggerTicks + ","
         + "restTicks:" + RestTicks + ","
+        + "courseKind:" + CourseKind + ","
+        + "rangeTargetId:" + RangeTargetId + ","
+        + "stepGapTicks:" + StepGapTicks + ","
+        + "matchDurationTicks:" + MatchDurationTicks + ","
         + "}";
     }
 }
