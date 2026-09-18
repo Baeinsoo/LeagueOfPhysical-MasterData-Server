@@ -179,7 +179,7 @@ namespace LOP.MasterData.Tests
             //  이 패키지는 Shared를 일부러 참조하지 않으므로(클·서 격리) 같은 식을 여기 다시 적는
             //  수밖에 없다. **저쪽을 고치면 여기도 같이 고쳐야 한다** — 안 그러면 이 검사만 낡은
             //  기준으로 조용히 통과한다. 아래 g와 0.02(틱 간격)도 같은 이유로 베껴 온 값이다.
-            float g = 20f;   // ArcheryTrajectory.Gravity
+            float g = 9.81f;   // ArcheryTrajectory.Gravity
             float longestLifetime = 2f * Mathf.Sqrt(2f * g * config.RiseHeightMax) / g;
             //  틱은 정수라 올림한다 — 내림하면 마지막 한 틱이 모자라 과녁이 땅에 닿기 전에 잘린다.
             int lifetimeTicks = Mathf.CeilToInt(longestLifetime / 0.02f);
@@ -219,7 +219,7 @@ namespace LOP.MasterData.Tests
             var config = tables.TbArcheryConfig.GetOrDefault(CircleMapId);
             Assert.IsNotNull(config, "TbArcheryConfig 원형 맵(id=5) 행이 없다");
 
-            float g = 20f;   // ArcheryTrajectory.Gravity
+            float g = 9.81f;   // ArcheryTrajectory.Gravity
             float fastest = Mathf.Sqrt(2f * g * config.RiseHeightMax);
             float perTick = fastest * 0.02f;
 
@@ -326,10 +326,10 @@ namespace LOP.MasterData.Tests
 
         //  화살 속도·중력의 원본은 LOP-Shared다 — MasterData 패키지는 Shared를 참조하지 않으므로
         //  (클·서 격리) 여기에 베껴 둘 수밖에 없다. 원본이 바뀌면 이 둘도 같이 고쳐야 한다.
-        //    원본: LOP.ArcheryAimSystem.MaxSpeed = 65f, LOP.ArcheryTrajectory.Gravity = 20f,
+        //    원본: LOP.ArcheryAimSystem.MaxSpeed = 65f, LOP.ArcheryTrajectory.Gravity = 9.81f,
         //          LOP.ArcheryAimSystem.FullDrawSeconds = 0.8f
         private const float ArrowMaxSpeed = 65f;
-        private const float ArrowGravity = 20f;
+        private const float ArrowGravity = 9.81f;
         private const float FullDrawSeconds = 0.8f;
         private const float TickSeconds = 0.02f;
 
@@ -373,7 +373,7 @@ namespace LOP.MasterData.Tests
         {
             var tables = LoadTables();
             //  45도로 꽉 당겨 쏜 최대 사거리. 여기가 물리적인 벽이다.
-            float maxRange = ArrowMaxSpeed * ArrowMaxSpeed / ArrowGravity;   // 211.25m
+            float maxRange = ArrowMaxSpeed * ArrowMaxSpeed / ArrowGravity;   // 약 430.7m
             //  벽에 딱 붙이면 각도가 1도만 어긋나도 못 닿는다 — 8할까지만 쓴다.
             float usable = maxRange * 0.8f;
 
