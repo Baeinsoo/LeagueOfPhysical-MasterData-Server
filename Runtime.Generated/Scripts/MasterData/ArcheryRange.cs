@@ -23,6 +23,7 @@ public sealed partial class ArcheryRange : Luban.BeanBase
         ExposureTicks = _buf.ReadInt();
         LateralSpanM = _buf.ReadFloat();
         LateralPeriodS = _buf.ReadFloat();
+        FaceRadiusM = _buf.ReadFloat();
     }
 
     public static ArcheryRange DeserializeArcheryRange(ByteBuf _buf)
@@ -58,6 +59,10 @@ public sealed partial class ArcheryRange : Luban.BeanBase
     /// lateral_period_s
     /// </summary>
     public readonly float LateralPeriodS;
+    /// <summary>
+    /// face_radius_m
+    /// </summary>
+    public readonly float FaceRadiusM;
    
     public const int __ID__ = 1403990439;
     public override int GetTypeId() => __ID__;
@@ -76,6 +81,7 @@ public sealed partial class ArcheryRange : Luban.BeanBase
         + "exposureTicks:" + ExposureTicks + ","
         + "lateralSpanM:" + LateralSpanM + ","
         + "lateralPeriodS:" + LateralPeriodS + ","
+        + "faceRadiusM:" + FaceRadiusM + ","
         + "}";
     }
 }
