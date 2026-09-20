@@ -38,6 +38,7 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         StepGapTicks = _buf.ReadInt();
         MatchDurationTicks = _buf.ReadInt();
         ShakeBaseRatio = _buf.ReadFloat();
+        ArrowsPerStand = _buf.ReadInt();
     }
 
     public static ArcheryConfig DeserializeArcheryConfig(ByteBuf _buf)
@@ -133,6 +134,10 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
     /// shake_base_ratio
     /// </summary>
     public readonly float ShakeBaseRatio;
+    /// <summary>
+    /// arrows_per_stand
+    /// </summary>
+    public readonly int ArrowsPerStand;
    
     public const int __ID__ = 157521944;
     public override int GetTypeId() => __ID__;
@@ -166,6 +171,7 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         + "stepGapTicks:" + StepGapTicks + ","
         + "matchDurationTicks:" + MatchDurationTicks + ","
         + "shakeBaseRatio:" + ShakeBaseRatio + ","
+        + "arrowsPerStand:" + ArrowsPerStand + ","
         + "}";
     }
 }
