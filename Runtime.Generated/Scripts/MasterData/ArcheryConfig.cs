@@ -39,6 +39,9 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         MatchDurationTicks = _buf.ReadInt();
         ShakeBaseRatio = _buf.ReadFloat();
         ArrowsPerStand = _buf.ReadInt();
+        BoxHalfWidthM = _buf.ReadFloat();
+        BoxHalfDepthM = _buf.ReadFloat();
+        MoveSpeedMps = _buf.ReadFloat();
     }
 
     public static ArcheryConfig DeserializeArcheryConfig(ByteBuf _buf)
@@ -138,6 +141,18 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
     /// arrows_per_stand
     /// </summary>
     public readonly int ArrowsPerStand;
+    /// <summary>
+    /// box_half_width_m
+    /// </summary>
+    public readonly float BoxHalfWidthM;
+    /// <summary>
+    /// box_half_depth_m
+    /// </summary>
+    public readonly float BoxHalfDepthM;
+    /// <summary>
+    /// move_speed_mps
+    /// </summary>
+    public readonly float MoveSpeedMps;
    
     public const int __ID__ = 157521944;
     public override int GetTypeId() => __ID__;
@@ -172,6 +187,9 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         + "matchDurationTicks:" + MatchDurationTicks + ","
         + "shakeBaseRatio:" + ShakeBaseRatio + ","
         + "arrowsPerStand:" + ArrowsPerStand + ","
+        + "boxHalfWidthM:" + BoxHalfWidthM + ","
+        + "boxHalfDepthM:" + BoxHalfDepthM + ","
+        + "moveSpeedMps:" + MoveSpeedMps + ","
         + "}";
     }
 }
