@@ -1,0 +1,36 @@
+name: trigger-downstream-ci
+
+#  이 레포는 클라·서버가 `file:../../`로 빌려 쓰는 **패키지**다. 여기 푸시해도 그쪽 CI는
+#  뜨지 않는다 — GitHub 워크플로는 자기 레포에서 일어난 일에만 반응하기 때문이다.
+#  시뮬 공유 코드가 여기 사는데 그것을 검증하는 시험은 저쪽에 있으므로, 여기서 깨워 준다.
+#
+#  토큰은 `DOWNSTREAM_CI_TOKEN` 시크릿이다. 남의 레포의 워크플로를 실행하는 것이라
+#  GitHub이 자격증명을 요구한다(기본 GITHUB_TOKEN은 자기 레포 안에서만 통한다).
+#  없으면 경고만 남기고 넘어간다 — 패키지 푸시 자체를 막을 일은 아니다.
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trigger:
+    #  몇 초짜리 호출이라 맥 러너를 쓰지 않는다 — 거기 줄을 서면 유니티 잡 뒤에서 밀린다.
+    runs-on: ubuntu-latest
+    steps:
+      - name: 소비자 레포 CI 깨우기
+        env:
+          GH_TOKEN: ${{ secrets.DOWNSTREAM_CI_TOKEN }}
+        run: |
+          set -e
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::warning::DOWNSTREAM_CI_TOKEN이 없다 — 소비자 CI를 깨우지 못했다."
+            exit 0
+          fi
+          gh workflow run server-ci.yml --repo Baeinsoo/LeagueOfPhysical-Server --ref main && echo "깨움: Baeinsoo/LeagueOfPhysical-Server / server-ci.yml"
+
