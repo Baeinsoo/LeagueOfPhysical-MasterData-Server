@@ -42,6 +42,8 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         BoxHalfWidthM = _buf.ReadFloat();
         BoxHalfDepthM = _buf.ReadFloat();
         MoveSpeedMps = _buf.ReadFloat();
+        ArrowMinSpeedMps = _buf.ReadFloat();
+        ArrowMaxSpeedMps = _buf.ReadFloat();
     }
 
     public static ArcheryConfig DeserializeArcheryConfig(ByteBuf _buf)
@@ -153,6 +155,14 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
     /// move_speed_mps
     /// </summary>
     public readonly float MoveSpeedMps;
+    /// <summary>
+    /// arrow_min_speed_mps
+    /// </summary>
+    public readonly float ArrowMinSpeedMps;
+    /// <summary>
+    /// arrow_max_speed_mps
+    /// </summary>
+    public readonly float ArrowMaxSpeedMps;
    
     public const int __ID__ = 157521944;
     public override int GetTypeId() => __ID__;
@@ -190,6 +200,8 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         + "boxHalfWidthM:" + BoxHalfWidthM + ","
         + "boxHalfDepthM:" + BoxHalfDepthM + ","
         + "moveSpeedMps:" + MoveSpeedMps + ","
+        + "arrowMinSpeedMps:" + ArrowMinSpeedMps + ","
+        + "arrowMaxSpeedMps:" + ArrowMaxSpeedMps + ","
         + "}";
     }
 }
