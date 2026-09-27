@@ -28,7 +28,6 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
         CoverageSamples = _buf.ReadInt();
         HoldTimeMax = _buf.ReadFloat();
         ContactMax = _buf.ReadInt();
-        StrokeLimit = _buf.ReadInt();
         FrameCount = _buf.ReadInt();
     }
 
@@ -86,10 +85,6 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
     /// </summary>
     public readonly int ContactMax;
     /// <summary>
-    /// stroke_limit
-    /// </summary>
-    public readonly int StrokeLimit;
-    /// <summary>
     /// frame_count
     /// </summary>
     public readonly int FrameCount;
@@ -116,7 +111,6 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
         + "coverageSamples:" + CoverageSamples + ","
         + "holdTimeMax:" + HoldTimeMax + ","
         + "contactMax:" + ContactMax + ","
-        + "strokeLimit:" + StrokeLimit + ","
         + "frameCount:" + FrameCount + ","
         + "}";
     }
