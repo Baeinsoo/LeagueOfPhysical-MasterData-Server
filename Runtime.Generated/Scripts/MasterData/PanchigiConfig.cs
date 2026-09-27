@@ -22,14 +22,13 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
         RestAngularEpsilon = _buf.ReadFloat();
         RestTicks = _buf.ReadInt();
         AimTimeoutSec = _buf.ReadFloat();
-        MatchTurnLimit = _buf.ReadInt();
-        DropOutLimit = _buf.ReadInt();
         ForceMultiplier = _buf.ReadFloat();
         HorizontalForceMultiplier = _buf.ReadFloat();
         InfluenceRadius = _buf.ReadFloat();
         CoverageSamples = _buf.ReadInt();
         HoldTimeMax = _buf.ReadFloat();
         ContactMax = _buf.ReadInt();
+        FrameCount = _buf.ReadInt();
     }
 
     public static PanchigiConfig DeserializePanchigiConfig(ByteBuf _buf)
@@ -62,14 +61,6 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
     /// </summary>
     public readonly float AimTimeoutSec;
     /// <summary>
-    /// match_turn_limit
-    /// </summary>
-    public readonly int MatchTurnLimit;
-    /// <summary>
-    /// drop_out_limit
-    /// </summary>
-    public readonly int DropOutLimit;
-    /// <summary>
     /// force_multiplier
     /// </summary>
     public readonly float ForceMultiplier;
@@ -93,6 +84,10 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
     /// contact_max
     /// </summary>
     public readonly int ContactMax;
+    /// <summary>
+    /// frame_count
+    /// </summary>
+    public readonly int FrameCount;
    
     public const int __ID__ = -598872373;
     public override int GetTypeId() => __ID__;
@@ -110,14 +105,13 @@ public sealed partial class PanchigiConfig : Luban.BeanBase
         + "restAngularEpsilon:" + RestAngularEpsilon + ","
         + "restTicks:" + RestTicks + ","
         + "aimTimeoutSec:" + AimTimeoutSec + ","
-        + "matchTurnLimit:" + MatchTurnLimit + ","
-        + "dropOutLimit:" + DropOutLimit + ","
         + "forceMultiplier:" + ForceMultiplier + ","
         + "horizontalForceMultiplier:" + HorizontalForceMultiplier + ","
         + "influenceRadius:" + InfluenceRadius + ","
         + "coverageSamples:" + CoverageSamples + ","
         + "holdTimeMax:" + HoldTimeMax + ","
         + "contactMax:" + ContactMax + ","
+        + "frameCount:" + FrameCount + ","
         + "}";
     }
 }
