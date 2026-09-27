@@ -36,6 +36,9 @@ public sealed partial class FlappyConfig : Luban.BeanBase
         ChaserMaxSpeed = _buf.ReadFloat();
         FinishBrake = _buf.ReadFloat();
         DashChargeMinFall = _buf.ReadFloat();
+        AirflowUpAccel = _buf.ReadFloat();
+        AirflowRiseCap = _buf.ReadFloat();
+        ShaftGravityMult = _buf.ReadFloat();
     }
 
     public static FlappyConfig DeserializeFlappyConfig(ByteBuf _buf)
@@ -123,6 +126,18 @@ public sealed partial class FlappyConfig : Luban.BeanBase
     /// dash_charge_min_fall
     /// </summary>
     public readonly float DashChargeMinFall;
+    /// <summary>
+    /// airflow_up_accel
+    /// </summary>
+    public readonly float AirflowUpAccel;
+    /// <summary>
+    /// airflow_rise_cap
+    /// </summary>
+    public readonly float AirflowRiseCap;
+    /// <summary>
+    /// shaft_gravity_mult
+    /// </summary>
+    public readonly float ShaftGravityMult;
    
     public const int __ID__ = 1154294080;
     public override int GetTypeId() => __ID__;
@@ -154,6 +169,9 @@ public sealed partial class FlappyConfig : Luban.BeanBase
         + "chaserMaxSpeed:" + ChaserMaxSpeed + ","
         + "finishBrake:" + FinishBrake + ","
         + "dashChargeMinFall:" + DashChargeMinFall + ","
+        + "airflowUpAccel:" + AirflowUpAccel + ","
+        + "airflowRiseCap:" + AirflowRiseCap + ","
+        + "shaftGravityMult:" + ShaftGravityMult + ","
         + "}";
     }
 }
