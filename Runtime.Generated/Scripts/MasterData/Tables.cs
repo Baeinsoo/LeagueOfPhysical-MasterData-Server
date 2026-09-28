@@ -89,6 +89,10 @@ public partial class Tables
     /// DodgeConfig(피하기 목숨&#183;판정&#183;위험 튜닝, 클서 공용)
     /// </summary>
     public TbDodgeConfig TbDodgeConfig {get; }
+    /// <summary>
+    /// DodgeStage(피하기 스테이지 순서&#183;길이&#183;종류&#183;세기, 클서 공용)
+    /// </summary>
+    public TbDodgeStage TbDodgeStage {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
@@ -111,6 +115,7 @@ public partial class Tables
         TbArcheryRing = new TbArcheryRing(loader("tbarcheryring"));
         TbArcheryRange = new TbArcheryRange(loader("tbarcheryrange"));
         TbDodgeConfig = new TbDodgeConfig(loader("tbdodgeconfig"));
+        TbDodgeStage = new TbDodgeStage(loader("tbdodgestage"));
         ResolveRef();
     }
     
@@ -135,6 +140,7 @@ public partial class Tables
         TbArcheryRing.ResolveRef(this);
         TbArcheryRange.ResolveRef(this);
         TbDodgeConfig.ResolveRef(this);
+        TbDodgeStage.ResolveRef(this);
     }
 }
 
