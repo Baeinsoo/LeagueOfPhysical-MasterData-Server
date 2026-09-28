@@ -36,6 +36,10 @@ public sealed partial class DodgeConfig : Luban.BeanBase
         RockSpeed = _buf.ReadFloat();
         RockRadius = _buf.ReadFloat();
         TileOnSeconds = _buf.ReadFloat();
+        MinIntervalSeconds = _buf.ReadFloat();
+        MinWarnSeconds = _buf.ReadFloat();
+        SuddenDeathBase = _buf.ReadFloat();
+        SuddenDeathGrowth = _buf.ReadFloat();
     }
 
     public static DodgeConfig DeserializeDodgeConfig(ByteBuf _buf)
@@ -123,6 +127,22 @@ public sealed partial class DodgeConfig : Luban.BeanBase
     /// tile_on_seconds
     /// </summary>
     public readonly float TileOnSeconds;
+    /// <summary>
+    /// min_interval_seconds
+    /// </summary>
+    public readonly float MinIntervalSeconds;
+    /// <summary>
+    /// min_warn_seconds
+    /// </summary>
+    public readonly float MinWarnSeconds;
+    /// <summary>
+    /// sudden_death_base
+    /// </summary>
+    public readonly float SuddenDeathBase;
+    /// <summary>
+    /// sudden_death_growth
+    /// </summary>
+    public readonly float SuddenDeathGrowth;
    
     public const int __ID__ = -2040151591;
     public override int GetTypeId() => __ID__;
@@ -154,6 +174,10 @@ public sealed partial class DodgeConfig : Luban.BeanBase
         + "rockSpeed:" + RockSpeed + ","
         + "rockRadius:" + RockRadius + ","
         + "tileOnSeconds:" + TileOnSeconds + ","
+        + "minIntervalSeconds:" + MinIntervalSeconds + ","
+        + "minWarnSeconds:" + MinWarnSeconds + ","
+        + "suddenDeathBase:" + SuddenDeathBase + ","
+        + "suddenDeathGrowth:" + SuddenDeathGrowth + ","
         + "}";
     }
 }
