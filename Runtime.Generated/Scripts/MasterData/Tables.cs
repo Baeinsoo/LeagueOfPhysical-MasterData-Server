@@ -85,6 +85,10 @@ public partial class Tables
     /// ArcheryRange(사거리 맵의 거리별 노출)
     /// </summary>
     public TbArcheryRange TbArcheryRange {get; }
+    /// <summary>
+    /// DodgeConfig(피하기 목숨&#183;판정&#183;위험 튜닝, 클서 공용)
+    /// </summary>
+    public TbDodgeConfig TbDodgeConfig {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
@@ -106,6 +110,7 @@ public partial class Tables
         TbArcheryTarget = new TbArcheryTarget(loader("tbarcherytarget"));
         TbArcheryRing = new TbArcheryRing(loader("tbarcheryring"));
         TbArcheryRange = new TbArcheryRange(loader("tbarcheryrange"));
+        TbDodgeConfig = new TbDodgeConfig(loader("tbdodgeconfig"));
         ResolveRef();
     }
     
@@ -129,6 +134,7 @@ public partial class Tables
         TbArcheryTarget.ResolveRef(this);
         TbArcheryRing.ResolveRef(this);
         TbArcheryRange.ResolveRef(this);
+        TbDodgeConfig.ResolveRef(this);
     }
 }
 
