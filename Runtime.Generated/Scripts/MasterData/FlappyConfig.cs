@@ -39,6 +39,7 @@ public sealed partial class FlappyConfig : Luban.BeanBase
         AirflowUpAccel = _buf.ReadFloat();
         AirflowRiseCap = _buf.ReadFloat();
         ShaftGravityMult = _buf.ReadFloat();
+        BodyLength = _buf.ReadFloat();
     }
 
     public static FlappyConfig DeserializeFlappyConfig(ByteBuf _buf)
@@ -138,6 +139,10 @@ public sealed partial class FlappyConfig : Luban.BeanBase
     /// shaft_gravity_mult
     /// </summary>
     public readonly float ShaftGravityMult;
+    /// <summary>
+    /// body_length
+    /// </summary>
+    public readonly float BodyLength;
    
     public const int __ID__ = 1154294080;
     public override int GetTypeId() => __ID__;
@@ -172,6 +177,7 @@ public sealed partial class FlappyConfig : Luban.BeanBase
         + "airflowUpAccel:" + AirflowUpAccel + ","
         + "airflowRiseCap:" + AirflowRiseCap + ","
         + "shaftGravityMult:" + ShaftGravityMult + ","
+        + "bodyLength:" + BodyLength + ","
         + "}";
     }
 }
