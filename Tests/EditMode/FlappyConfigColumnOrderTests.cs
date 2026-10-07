@@ -29,7 +29,7 @@ namespace LOP.MasterData.Tests
         }
 
         [Test]
-        public void 배포된_바이트가_기대하는_일곱_값과_일치한다()
+        public void 배포된_바이트가_기대하는_여덟_값과_일치한다()
         {
             var tables = LoadTables();
             var config = tables.TbFlappyConfig.GetOrDefault(1);
@@ -37,13 +37,14 @@ namespace LOP.MasterData.Tests
             Assert.IsNotNull(config, "TbFlappyConfig id=1 행이 없다");
 
             const string hint = " — 엑셀 열 순서가 바뀌었을 수 있다";
-            Assert.AreEqual(6.8f, config.ForwardSpeed, "ForwardSpeed" + hint);
-            Assert.AreEqual(18.6f, config.FlapImpulse, "FlapImpulse" + hint);
-            Assert.AreEqual(59f, config.Gravity, "Gravity" + hint);
-            Assert.AreEqual(30f, config.MaxFallSpeed, "MaxFallSpeed" + hint);
+            Assert.AreEqual(4.5f, config.ForwardSpeed, "ForwardSpeed" + hint);
+            Assert.AreEqual(10.125f, config.FlapImpulse, "FlapImpulse" + hint);
+            Assert.AreEqual(33.75f, config.Gravity, "Gravity" + hint);
+            Assert.AreEqual(11.25f, config.MaxFallSpeed, "MaxFallSpeed" + hint);
             Assert.AreEqual(0.45f, config.BodyRadius, "BodyRadius" + hint);
             Assert.AreEqual(0.9f, config.BodyHeight, "BodyHeight" + hint);
             Assert.AreEqual(0.35f, config.Restitution, "Restitution" + hint);
+            Assert.AreEqual(1.28f, config.BodyLength, "BodyLength" + hint);
         }
     }
 }
