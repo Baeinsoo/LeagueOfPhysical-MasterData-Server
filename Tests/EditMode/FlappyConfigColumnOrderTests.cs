@@ -44,7 +44,8 @@ namespace LOP.MasterData.Tests
             Assert.AreEqual(0.45f, config.BodyRadius, "BodyRadius" + hint);
             Assert.AreEqual(0.9f, config.BodyHeight, "BodyHeight" + hint);
             Assert.AreEqual(0.35f, config.Restitution, "Restitution" + hint);
-            Assert.AreEqual(1.28f, config.BodyLength, "BodyLength" + hint);
+            //  10-12: 몸통을 공(지름 0.9 = BodyHeight)으로 — 지름보다 길지 않으면 누운 캡슐이 아니다(FlappyBodyShape.IsLying).
+            Assert.AreEqual(0.9f, config.BodyLength, "BodyLength" + hint);
         }
     }
 }
