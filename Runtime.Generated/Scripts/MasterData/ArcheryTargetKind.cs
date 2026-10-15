@@ -23,6 +23,11 @@ public sealed partial class ArcheryTargetKind : Luban.BeanBase
         Weight = _buf.ReadInt();
         IsTrap = _buf.ReadBool();
         Shape = _buf.ReadInt();
+        DistanceMinM = _buf.ReadFloat();
+        DistanceMaxM = _buf.ReadFloat();
+        DriftMinMps = _buf.ReadFloat();
+        DriftMaxMps = _buf.ReadFloat();
+        StunTicks = _buf.ReadInt();
     }
 
     public static ArcheryTargetKind DeserializeArcheryTargetKind(ByteBuf _buf)
@@ -58,6 +63,26 @@ public sealed partial class ArcheryTargetKind : Luban.BeanBase
     /// shape
     /// </summary>
     public readonly int Shape;
+    /// <summary>
+    /// distance_min_m
+    /// </summary>
+    public readonly float DistanceMinM;
+    /// <summary>
+    /// distance_max_m
+    /// </summary>
+    public readonly float DistanceMaxM;
+    /// <summary>
+    /// drift_min_mps
+    /// </summary>
+    public readonly float DriftMinMps;
+    /// <summary>
+    /// drift_max_mps
+    /// </summary>
+    public readonly float DriftMaxMps;
+    /// <summary>
+    /// stun_ticks
+    /// </summary>
+    public readonly int StunTicks;
    
     public const int __ID__ = -356603237;
     public override int GetTypeId() => __ID__;
@@ -76,6 +101,11 @@ public sealed partial class ArcheryTargetKind : Luban.BeanBase
         + "weight:" + Weight + ","
         + "isTrap:" + IsTrap + ","
         + "shape:" + Shape + ","
+        + "distanceMinM:" + DistanceMinM + ","
+        + "distanceMaxM:" + DistanceMaxM + ","
+        + "driftMinMps:" + DriftMinMps + ","
+        + "driftMaxMps:" + DriftMaxMps + ","
+        + "stunTicks:" + StunTicks + ","
         + "}";
     }
 }

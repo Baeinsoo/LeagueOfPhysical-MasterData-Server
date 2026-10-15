@@ -89,7 +89,8 @@ namespace LOP.MasterData.Tests
 
             foreach (var config in tables.TbArcheryConfig.DataList)
             {
-                if (config.CourseKind == 0) { continue; }   // 0 = 웨이브 — 자리 줄을 안 쓴다
+                //  자리 줄을 쓰는 것은 사거리(1)·한 발 승부(2)뿐이다 — 웨이브(0)·투석기(3)는 건너뛴다.
+                if (config.CourseKind != 1 && config.CourseKind != 2) { continue; }
                 checkedMaps++;
 
                 int rows = 0;
@@ -118,7 +119,8 @@ namespace LOP.MasterData.Tests
 
             foreach (var config in tables.TbArcheryConfig.DataList)
             {
-                if (config.CourseKind == 0) { continue; }
+                //  자리 줄을 쓰는 것은 사거리(1)·한 발 승부(2)뿐이다 — 웨이브(0)·투석기(3)는 건너뛴다.
+                if (config.CourseKind != 1 && config.CourseKind != 2) { continue; }
                 checkedMaps++;
 
                 var kind = tables.TbArcheryTarget.GetOrDefault(config.RangeTargetId);
