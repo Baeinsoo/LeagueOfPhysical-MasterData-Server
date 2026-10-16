@@ -44,6 +44,15 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         MoveSpeedMps = _buf.ReadFloat();
         ArrowMinSpeedMps = _buf.ReadFloat();
         ArrowMaxSpeedMps = _buf.ReadFloat();
+        RoundCount = _buf.ReadInt();
+        RoundIntroTicks = _buf.ReadInt();
+        RoundHuntTicks = _buf.ReadInt();
+        RoundResultTicks = _buf.ReadInt();
+        VolleyPeriodTicks = _buf.ReadInt();
+        VolleyCueTicks = _buf.ReadInt();
+        VolleyQuietTicks = _buf.ReadInt();
+        TargetLifeTicks = _buf.ReadInt();
+        TrapChance = _buf.ReadFloat();
     }
 
     public static ArcheryConfig DeserializeArcheryConfig(ByteBuf _buf)
@@ -163,6 +172,42 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
     /// arrow_max_speed_mps
     /// </summary>
     public readonly float ArrowMaxSpeedMps;
+    /// <summary>
+    /// round_count
+    /// </summary>
+    public readonly int RoundCount;
+    /// <summary>
+    /// round_intro_ticks
+    /// </summary>
+    public readonly int RoundIntroTicks;
+    /// <summary>
+    /// round_hunt_ticks
+    /// </summary>
+    public readonly int RoundHuntTicks;
+    /// <summary>
+    /// round_result_ticks
+    /// </summary>
+    public readonly int RoundResultTicks;
+    /// <summary>
+    /// volley_period_ticks
+    /// </summary>
+    public readonly int VolleyPeriodTicks;
+    /// <summary>
+    /// volley_cue_ticks
+    /// </summary>
+    public readonly int VolleyCueTicks;
+    /// <summary>
+    /// volley_quiet_ticks
+    /// </summary>
+    public readonly int VolleyQuietTicks;
+    /// <summary>
+    /// target_life_ticks
+    /// </summary>
+    public readonly int TargetLifeTicks;
+    /// <summary>
+    /// trap_chance
+    /// </summary>
+    public readonly float TrapChance;
    
     public const int __ID__ = 157521944;
     public override int GetTypeId() => __ID__;
@@ -202,6 +247,15 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         + "moveSpeedMps:" + MoveSpeedMps + ","
         + "arrowMinSpeedMps:" + ArrowMinSpeedMps + ","
         + "arrowMaxSpeedMps:" + ArrowMaxSpeedMps + ","
+        + "roundCount:" + RoundCount + ","
+        + "roundIntroTicks:" + RoundIntroTicks + ","
+        + "roundHuntTicks:" + RoundHuntTicks + ","
+        + "roundResultTicks:" + RoundResultTicks + ","
+        + "volleyPeriodTicks:" + VolleyPeriodTicks + ","
+        + "volleyCueTicks:" + VolleyCueTicks + ","
+        + "volleyQuietTicks:" + VolleyQuietTicks + ","
+        + "targetLifeTicks:" + TargetLifeTicks + ","
+        + "trapChance:" + TrapChance + ","
         + "}";
     }
 }
