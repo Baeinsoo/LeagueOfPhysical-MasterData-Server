@@ -53,6 +53,7 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         VolleyQuietTicks = _buf.ReadInt();
         TargetLifeTicks = _buf.ReadInt();
         TrapChance = _buf.ReadFloat();
+        JackpotChance = _buf.ReadFloat();
     }
 
     public static ArcheryConfig DeserializeArcheryConfig(ByteBuf _buf)
@@ -208,6 +209,10 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
     /// trap_chance
     /// </summary>
     public readonly float TrapChance;
+    /// <summary>
+    /// jackpot_chance
+    /// </summary>
+    public readonly float JackpotChance;
    
     public const int __ID__ = 157521944;
     public override int GetTypeId() => __ID__;
@@ -256,6 +261,7 @@ public sealed partial class ArcheryConfig : Luban.BeanBase
         + "volleyQuietTicks:" + VolleyQuietTicks + ","
         + "targetLifeTicks:" + TargetLifeTicks + ","
         + "trapChance:" + TrapChance + ","
+        + "jackpotChance:" + JackpotChance + ","
         + "}";
     }
 }
