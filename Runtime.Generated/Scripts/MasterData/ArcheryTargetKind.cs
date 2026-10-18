@@ -28,6 +28,17 @@ public sealed partial class ArcheryTargetKind : Luban.BeanBase
         DriftMinMps = _buf.ReadFloat();
         DriftMaxMps = _buf.ReadFloat();
         StunTicks = _buf.ReadInt();
+        IsJackpot = _buf.ReadBool();
+        HeightMinM = _buf.ReadFloat();
+        HeightMaxM = _buf.ReadFloat();
+        ArcMinM = _buf.ReadFloat();
+        ArcMaxM = _buf.ReadFloat();
+        ClimbMinMps = _buf.ReadFloat();
+        ClimbMaxMps = _buf.ReadFloat();
+        BobAmpM = _buf.ReadFloat();
+        BobHz = _buf.ReadFloat();
+        SpinHz = _buf.ReadFloat();
+        LateralHalfM = _buf.ReadFloat();
     }
 
     public static ArcheryTargetKind DeserializeArcheryTargetKind(ByteBuf _buf)
@@ -83,6 +94,50 @@ public sealed partial class ArcheryTargetKind : Luban.BeanBase
     /// stun_ticks
     /// </summary>
     public readonly int StunTicks;
+    /// <summary>
+    /// is_jackpot
+    /// </summary>
+    public readonly bool IsJackpot;
+    /// <summary>
+    /// height_min_m
+    /// </summary>
+    public readonly float HeightMinM;
+    /// <summary>
+    /// height_max_m
+    /// </summary>
+    public readonly float HeightMaxM;
+    /// <summary>
+    /// arc_min_m
+    /// </summary>
+    public readonly float ArcMinM;
+    /// <summary>
+    /// arc_max_m
+    /// </summary>
+    public readonly float ArcMaxM;
+    /// <summary>
+    /// climb_min_mps
+    /// </summary>
+    public readonly float ClimbMinMps;
+    /// <summary>
+    /// climb_max_mps
+    /// </summary>
+    public readonly float ClimbMaxMps;
+    /// <summary>
+    /// bob_amp_m
+    /// </summary>
+    public readonly float BobAmpM;
+    /// <summary>
+    /// bob_hz
+    /// </summary>
+    public readonly float BobHz;
+    /// <summary>
+    /// spin_hz
+    /// </summary>
+    public readonly float SpinHz;
+    /// <summary>
+    /// lateral_half_m
+    /// </summary>
+    public readonly float LateralHalfM;
    
     public const int __ID__ = -356603237;
     public override int GetTypeId() => __ID__;
@@ -106,6 +161,17 @@ public sealed partial class ArcheryTargetKind : Luban.BeanBase
         + "driftMinMps:" + DriftMinMps + ","
         + "driftMaxMps:" + DriftMaxMps + ","
         + "stunTicks:" + StunTicks + ","
+        + "isJackpot:" + IsJackpot + ","
+        + "heightMinM:" + HeightMinM + ","
+        + "heightMaxM:" + HeightMaxM + ","
+        + "arcMinM:" + ArcMinM + ","
+        + "arcMaxM:" + ArcMaxM + ","
+        + "climbMinMps:" + ClimbMinMps + ","
+        + "climbMaxMps:" + ClimbMaxMps + ","
+        + "bobAmpM:" + BobAmpM + ","
+        + "bobHz:" + BobHz + ","
+        + "spinHz:" + SpinHz + ","
+        + "lateralHalfM:" + LateralHalfM + ","
         + "}";
     }
 }
