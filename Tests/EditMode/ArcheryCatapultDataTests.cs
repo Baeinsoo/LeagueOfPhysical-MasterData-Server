@@ -35,14 +35,16 @@ namespace LOP.MasterData.Tests
             Assert.AreEqual(80, c.RoundIntroTicks, "RoundIntroTicks(1.6초)" + hint);
             Assert.AreEqual(1250, c.RoundHuntTicks, "RoundHuntTicks(25초)" + hint);
             Assert.AreEqual(110, c.RoundResultTicks, "RoundResultTicks(2.2초)" + hint);
-            Assert.AreEqual(160, c.VolleyPeriodTicks, "VolleyPeriodTicks(3.2초)" + hint);
+            Assert.AreEqual(180, c.VolleyPeriodTicks, "VolleyPeriodTicks(3.6초)" + hint);
             Assert.AreEqual(35, c.VolleyCueTicks, "VolleyCueTicks(0.7초)" + hint);
-            Assert.AreEqual(150, c.VolleyQuietTicks, "VolleyQuietTicks(3초)" + hint);
-            Assert.AreEqual(130, c.TargetLifeTicks, "TargetLifeTicks(2.6초)" + hint);
+            Assert.AreEqual(215, c.VolleyQuietTicks, "VolleyQuietTicks(4.3초 = 준비 + 수명)" + hint);
+            Assert.AreEqual(180, c.TargetLifeTicks, "TargetLifeTicks(3.6초)" + hint);
             Assert.AreEqual(0.35f, c.TrapChance, 1e-5f, "TrapChance" + hint);
             Assert.AreEqual(0.28f, c.JackpotChance, 1e-5f, "JackpotChance" + hint);
             Assert.AreEqual(16f, c.SpawnRadius, "SpawnRadius(가로 ±16 m)" + hint);
             Assert.AreEqual(0, c.ArrowsPerStand, "화살통 없음" + hint);
+            Assert.AreEqual(180f, c.ArrowMaxSpeedMps, 1e-5f, "ArrowMaxSpeedMps" + hint);
+            Assert.AreEqual(90f, c.ArrowMinSpeedMps, 1e-5f, "ArrowMinSpeedMps(최대의 절반)" + hint);
         }
 
         [Test]
@@ -150,11 +152,11 @@ namespace LOP.MasterData.Tests
         }
 
         [Test]
-        public void 무리는_라운드마다_일곱이다()
+        public void 무리는_라운드마다_여섯이다()
         {
             var c = LoadTables().TbArcheryConfig.GetOrDefault(13);
             int perRound = (c.RoundHuntTicks - c.VolleyQuietTicks + c.VolleyPeriodTicks - 1) / c.VolleyPeriodTicks;
-            Assert.AreEqual(7, perRound);
+            Assert.AreEqual(6, perRound);
             int lastGone = (perRound - 1) * c.VolleyPeriodTicks + c.VolleyCueTicks + c.TargetLifeTicks;
             Assert.Less(lastGone, c.RoundHuntTicks, "마지막 무리가 사냥 안에서 사라져야 한다");
         }
