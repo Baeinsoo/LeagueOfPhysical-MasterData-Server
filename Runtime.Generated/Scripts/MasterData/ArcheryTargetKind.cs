@@ -39,6 +39,11 @@ public sealed partial class ArcheryTargetKind : Luban.BeanBase
         BobHz = _buf.ReadFloat();
         SpinHz = _buf.ReadFloat();
         LateralHalfM = _buf.ReadFloat();
+        SpawnSideMinM = _buf.ReadFloat();
+        SpawnSideMaxM = _buf.ReadFloat();
+        LifeTicks = _buf.ReadInt();
+        SwingAmpM = _buf.ReadFloat();
+        SwingDipM = _buf.ReadFloat();
     }
 
     public static ArcheryTargetKind DeserializeArcheryTargetKind(ByteBuf _buf)
@@ -138,6 +143,26 @@ public sealed partial class ArcheryTargetKind : Luban.BeanBase
     /// lateral_half_m
     /// </summary>
     public readonly float LateralHalfM;
+    /// <summary>
+    /// spawn_side_min_m
+    /// </summary>
+    public readonly float SpawnSideMinM;
+    /// <summary>
+    /// spawn_side_max_m
+    /// </summary>
+    public readonly float SpawnSideMaxM;
+    /// <summary>
+    /// life_ticks
+    /// </summary>
+    public readonly int LifeTicks;
+    /// <summary>
+    /// swing_amp_m
+    /// </summary>
+    public readonly float SwingAmpM;
+    /// <summary>
+    /// swing_dip_m
+    /// </summary>
+    public readonly float SwingDipM;
    
     public const int __ID__ = -356603237;
     public override int GetTypeId() => __ID__;
@@ -172,6 +197,11 @@ public sealed partial class ArcheryTargetKind : Luban.BeanBase
         + "bobHz:" + BobHz + ","
         + "spinHz:" + SpinHz + ","
         + "lateralHalfM:" + LateralHalfM + ","
+        + "spawnSideMinM:" + SpawnSideMinM + ","
+        + "spawnSideMaxM:" + SpawnSideMaxM + ","
+        + "lifeTicks:" + LifeTicks + ","
+        + "swingAmpM:" + SwingAmpM + ","
+        + "swingDipM:" + SwingDipM + ","
         + "}";
     }
 }

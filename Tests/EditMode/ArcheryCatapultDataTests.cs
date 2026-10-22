@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace LOP.MasterData.Tests
 {
     /// <summary>
-    /// 투석기 사냥(course_kind 3) 배포 데이터 검사. 값의 뜻은 LOP-Shared(<c>ArcheryCatapultSettings</c>)에 있지만
+    /// 투석기 사냥(course_kind 3) 배포 데이터 검사. 값의 뜻은 LOP-Shared(<c>ArcheryCatapultSettings</c>·<c>ArcheryCatapultMotion</c>)에 있지만
     /// MasterData 패키지는 Shared를 참조하지 않으므로(클·서 격리) 필요한 상수를 여기 베껴 둔다.
     /// </summary>
     public class ArcheryCatapultDataTests
@@ -16,6 +16,8 @@ namespace LOP.MasterData.Tests
         private const float TickSeconds = 0.02f;
         //  원본: LOP.ArcheryAimSystem.FullDrawSeconds = 0.5f
         private const float FullDrawSeconds = 0.5f;
+        //  원본: LOP.ArcheryTargetMotion.MinSpinRadiusRatio = 0.2f
+        private const float MinSpinRadiusRatio = 0.2f;
 
         private static Tables LoadTables()
         {
@@ -39,9 +41,9 @@ namespace LOP.MasterData.Tests
             Assert.AreEqual(35, c.VolleyCueTicks, "VolleyCueTicks(0.7초)" + hint);
             Assert.AreEqual(215, c.VolleyQuietTicks, "VolleyQuietTicks(4.3초 = 준비 + 수명)" + hint);
             Assert.AreEqual(180, c.TargetLifeTicks, "TargetLifeTicks(3.6초)" + hint);
-            Assert.AreEqual(0.35f, c.TrapChance, 1e-5f, "TrapChance" + hint);
+            Assert.AreEqual(0.6f, c.TrapChance, 1e-5f, "TrapChance(3차 60%)" + hint);
             Assert.AreEqual(0.28f, c.JackpotChance, 1e-5f, "JackpotChance" + hint);
-            Assert.AreEqual(16f, c.SpawnRadius, "SpawnRadius(가로 ±16 m)" + hint);
+            Assert.AreEqual(16f, c.SpawnRadius, "SpawnRadius(설정 범위 ±16 m — 종류 칸이 0일 때만 읽힌다)" + hint);
             Assert.AreEqual(0, c.ArrowsPerStand, "화살통 없음" + hint);
             Assert.AreEqual(180f, c.ArrowMaxSpeedMps, 1e-5f, "ArrowMaxSpeedMps" + hint);
             Assert.AreEqual(90f, c.ArrowMinSpeedMps, 1e-5f, "ArrowMinSpeedMps(최대의 절반)" + hint);
@@ -58,16 +60,16 @@ namespace LOP.MasterData.Tests
             Assert.AreEqual(t.TbMap.GetOrDefault(7).ScenePath, map.ScenePath);
         }
 
-        //  2차 spec §2 표(반지름, 점수, 거리대, 가로 속도대). 가중치는 일반만 표에 있다.
+        //  3차 spec 표(반지름, 점수, 거리대, 가로 속도대). 2차에서 바뀐 것: 종 초속 5~5.8, 피냐타 옆 흐름 없음, 금지물 −4.
         [TestCase("WaterBalloon", 1.0f, 1, 30f, 36f, 2.0f, 3.0f)]
         [TestCase("Watermelon", 0.75f, 2, 38f, 46f, 2.5f, 3.5f)]
         [TestCase("Plate", 0.85f, 2, 36f, 44f, 5.5f, 7.0f)]
         [TestCase("Rocket", 0.45f, 3, 46f, 55f, 0.5f, 1.5f)]
-        [TestCase("GoldenBell", 0.8f, 5, 46f, 54f, 1.6f, 2.2f)]
-        [TestCase("Pinata", 0.95f, 5, 44f, 52f, 1.8f, 2.4f)]
-        [TestCase("BirdNest", 0.75f, -3, 32f, 48f, 2.5f, 3.5f)]
-        [TestCase("CheerFlag", 0.8f, -3, 32f, 48f, 2.5f, 3.5f)]
-        [TestCase("KidBalloon", 0.8f, -3, 32f, 48f, 2.0f, 3.0f)]
+        [TestCase("GoldenBell", 0.8f, 5, 46f, 54f, 5.0f, 5.8f)]
+        [TestCase("Pinata", 0.95f, 5, 44f, 52f, 0f, 0f)]
+        [TestCase("BirdNest", 0.75f, -4, 32f, 48f, 2.5f, 3.5f)]
+        [TestCase("CheerFlag", 0.8f, -4, 32f, 48f, 2.5f, 3.5f)]
+        [TestCase("KidBalloon", 0.8f, -4, 32f, 48f, 2.0f, 3.0f)]
         public void 투석기_표적_값이_spec_표와_같다(string code, float radius, int points, float d0, float d1, float v0, float v1)
         {
             var k = LoadTables().TbArcheryTarget.DataList.FirstOrDefault(x => x.Code == code);
@@ -79,7 +81,7 @@ namespace LOP.MasterData.Tests
             Assert.AreEqual(v0, k.DriftMinMps, 1e-5f, code);
             Assert.AreEqual(v1, k.DriftMaxMps, 1e-5f, code);
             Assert.AreEqual(0, k.Shape, $"{code}: 투석기 표적은 공(판정 구)이다");
-            Assert.AreEqual(k.IsTrap, k.StunTicks == 75, $"{code}: 사격 금지(1.5초)는 금지물만");
+            Assert.AreEqual(k.IsTrap, k.StunTicks == 100, $"{code}: 사격 금지(2초)는 금지물만");
             Assert.IsFalse(k.IsTrap && k.IsJackpot, code);
         }
 
@@ -100,19 +102,37 @@ namespace LOP.MasterData.Tests
         }
 
         [Test]
-        public void 한_틱에_가장_작아진_판정_반지름보다_적게_간다()
+        public void 투석기_표적의_띠_점수가_표적_점수와_같다()
         {
-            //  판정은 "한 틱 동안 표적이 멈춰 있다"고 본다. 위아래 빠르기 = 솟음 + 포물선이 막 떠오를 때(4·솟는 높이 ÷ 수명)
-            //  + 출렁의 최대 빠르기(2π·f·A). 포물선은 맵 13의 수명 동안 한 번 솟았다 내려오므로 처음과 끝이 가장 빠르다.
-            //  도는 접시는 옆으로 누우면 반지름이 0.2배까지 작아진다 — 그 크기로 잰다.
+            //  판정은 띠가 있으면 띠 점수를 쓴다(LOP.ArcheryHitRules) — 표적 점수만 고치고 띠를 안 고치면 실제 벌점은 옛 값이다.
             var t = LoadTables();
-            float lifeSeconds = t.TbArcheryConfig.GetOrDefault(13).TargetLifeTicks * TickSeconds;
             foreach (var k in t.TbArcheryTarget.DataList.Where(x => x.DistanceMaxM > 0f))
             {
-                float vertical = k.ClimbMaxMps + 2f * (float)System.Math.PI * k.BobHz * k.BobAmpM;
-                vertical += 4f * k.ArcMaxM / lifeSeconds;
-                float speed = (float)System.Math.Sqrt(k.DriftMaxMps * k.DriftMaxMps + vertical * vertical);
-                float smallest = k.SpinHz > 0f ? k.Radius * 0.2f : k.Radius;
+                var rings = t.TbArcheryRing.DataList.Where(r => r.TargetId == k.Id).ToList();
+                Assert.IsNotEmpty(rings, k.Code + "의 띠가 없다");
+                Assert.IsTrue(rings.All(r => r.Points == k.Points),
+                    $"{k.Code}: 띠 점수 [{string.Join(",", rings.Select(r => r.Points))}] ≠ 표적 점수 {k.Points}");
+            }
+        }
+
+        [Test]
+        public void 한_틱에_가장_작아진_판정_반지름보다_적게_간다()
+        {
+            //  판정은 "한 틱 동안 표적이 멈춰 있다"고 본다. 가로 빠르기 = 옆 속도 + 그네 최대(π·A/L).
+            //  위아래 빠르기 = 솟음 + 포물선이 막 떠오를 때(4·솟는 높이 ÷ 수명) + 출렁 최대(2π·f·A) + 그네 세로 최대(π·D/L).
+            //  최대들이 같은 순간에 오지 않지만 넉넉히 더한다. 수명은 종류 수명(없으면 맵 13 수명) — 대박은 2초라 그네가 빠르다.
+            //  도는 접시는 옆으로 누우면 반지름이 0.2배까지 작아진다 — 그 크기로 잰다.
+            var t = LoadTables();
+            int configLife = t.TbArcheryConfig.GetOrDefault(13).TargetLifeTicks;
+            foreach (var k in t.TbArcheryTarget.DataList.Where(x => x.DistanceMaxM > 0f))
+            {
+                float lifeSeconds = (k.LifeTicks > 0 ? k.LifeTicks : configLife) * TickSeconds;
+                float swingRate = (float)System.Math.PI / lifeSeconds;
+                float lateral = k.DriftMaxMps + k.SwingAmpM * swingRate;
+                float vertical = k.ClimbMaxMps + 2f * (float)System.Math.PI * k.BobHz * k.BobAmpM
+                               + 4f * k.ArcMaxM / lifeSeconds + k.SwingDipM * swingRate;
+                float speed = (float)System.Math.Sqrt(lateral * lateral + vertical * vertical);
+                float smallest = k.SpinHz > 0f ? k.Radius * MinSpinRadiusRatio : k.Radius;
                 Assert.Less(speed * TickSeconds, smallest, $"{k.Code}: 한 틱 {speed * TickSeconds:F3} m ≥ 반지름 {smallest:F3} m — 판정 뚫림");
             }
         }
@@ -128,27 +148,68 @@ namespace LOP.MasterData.Tests
             Assert.That(t["Plate"].SpinHz, Is.InRange(1.05f, 1.15f), "접시 초당 약 1.1바퀴");
             Assert.AreEqual(3.5f, t["Rocket"].ClimbMinMps, 1e-5f); Assert.AreEqual(5f, t["Rocket"].ClimbMaxMps, 1e-5f);
             Assert.AreEqual(1f, t["Rocket"].HeightMinM, 1e-5f); Assert.AreEqual(3f, t["Rocket"].HeightMaxM, 1e-5f);
-            foreach (var c in new[] { "GoldenBell", "Pinata" }) { Assert.AreEqual(0.3f, t[c].BobAmpM, 1e-5f, c + " 느린 출렁 ±0.3 m"); }
-            //  시작 높이는 모두 땅 위, 높이 범위가 거꾸로가 아니다.
+
+            //  3차 §1 나오는 자리 — 접시 바깥 6~14 m, 종 4~8 m, 피냐타 3~8 m. 나머지는 띠 없이 범위 아무 데서나.
+            AssertSide(t["Plate"], 6f, 14f);
+            AssertSide(t["GoldenBell"], 4f, 8f);
+            AssertSide(t["Pinata"], 3f, 8f);
+            foreach (var c in new[] { "WaterBalloon", "Watermelon", "Rocket" }) { AssertAnywhere(t[c], 12f); }
+            foreach (var c in new[] { "BirdNest", "CheerFlag", "KidBalloon" }) { AssertAnywhere(t[c], 10f); }
+
+            //  3차 §2 대박 — 2초(100틱), 출렁 없음. 종은 곧게, 피냐타는 그네 한 번(A 3 m, D 1.6 m).
+            foreach (var c in new[] { "GoldenBell", "Pinata" })
+            {
+                Assert.AreEqual(100, t[c].LifeTicks, c + " 수명 2초");
+                Assert.AreEqual(0f, t[c].BobAmpM, 1e-6f, c + " 출렁 없음");
+            }
+            Assert.AreEqual(0f, t["GoldenBell"].SwingAmpM + t["GoldenBell"].SwingDipM, 1e-6f, "종은 곧게");
+            Assert.AreEqual(3f, t["Pinata"].SwingAmpM, 1e-5f, "피냐타 그네 — 끝까지 6 m");
+            Assert.AreEqual(1.6f, t["Pinata"].SwingDipM, 1e-5f, "피냐타 가운데서 1.6 m 낮다");
+            foreach (var k in t.Values.Where(x => !x.IsJackpot))
+            {
+                Assert.AreEqual(0, k.LifeTicks, k.Code + " — 일반·금지물은 무리 공통 수명");
+                Assert.AreEqual(0f, k.SwingAmpM + k.SwingDipM, 1e-6f, k.Code + " — 그네는 피냐타만");
+            }
+
+            //  범위가 거꾸로가 아니고 시작 높이는 땅 위다.
             foreach (var k in t.Values)
             {
                 Assert.Greater(k.HeightMinM, 0f, k.Code);
                 Assert.LessOrEqual(k.HeightMinM, k.HeightMaxM, k.Code);
                 Assert.LessOrEqual(k.ArcMinM, k.ArcMaxM, k.Code);
                 Assert.LessOrEqual(k.ClimbMinMps, k.ClimbMaxMps, k.Code);
+                Assert.LessOrEqual(k.SpawnSideMinM, k.SpawnSideMaxM, k.Code);
                 Assert.GreaterOrEqual(k.LateralHalfM, 0f, k.Code);
+                Assert.GreaterOrEqual(k.LifeTicks, 0, k.Code);
             }
         }
 
+        private static void AssertSide(ArcheryTargetKind k, float min, float max)
+        {
+            Assert.AreEqual(min, k.SpawnSideMinM, 1e-5f, k.Code + " 바깥 띠 안쪽");
+            Assert.AreEqual(max, k.SpawnSideMaxM, 1e-5f, k.Code + " 바깥 띠 바깥쪽");
+            Assert.AreEqual(0f, k.LateralHalfM, 1e-6f, k.Code + " — 바깥 띠가 있으면 가로 범위는 안 읽힌다(헷갈리지 않게 0)");
+        }
+
+        private static void AssertAnywhere(ArcheryTargetKind k, float half)
+        {
+            Assert.AreEqual(0f, k.SpawnSideMinM + k.SpawnSideMaxM, 1e-6f, k.Code + " — 바깥 띠 없음");
+            Assert.AreEqual(half, k.LateralHalfM, 1e-5f, k.Code + $" 나오는 범위 ±{half} m");
+        }
+
         [Test]
-        public void 표적_수명이_만작과_가장_먼_비행보다_길다()
+        public void 표적_수명이_만작과_가장_먼_비행보다_길고_무리_수명을_넘지_않는다()
         {
             var t = LoadTables();
             var c = t.TbArcheryConfig.GetOrDefault(13);
-            float farthest = 0f;
-            foreach (var k in t.TbArcheryTarget.DataList) { farthest = System.Math.Max(farthest, k.DistanceMaxM); }
-            float flight = farthest / c.ArrowMaxSpeedMps;
-            Assert.Greater(c.TargetLifeTicks * TickSeconds, FullDrawSeconds + flight);
+            foreach (var k in t.TbArcheryTarget.DataList.Where(x => x.DistanceMaxM > 0f))
+            {
+                int life = k.LifeTicks > 0 ? k.LifeTicks : c.TargetLifeTicks;
+                float flight = k.DistanceMaxM / c.ArrowMaxSpeedMps;
+                Assert.Greater(life * TickSeconds, FullDrawSeconds + flight, k.Code + " — 한 발도 못 쏜다");
+                //  무리 번호는 발사 뒤 TargetLifeTicks 동안만 그 무리를 가리킨다(LiveVolleyAt) — 더 길면 끝이 잘린다.
+                Assert.LessOrEqual(life, c.TargetLifeTicks, k.Code);
+            }
         }
 
         [Test]
