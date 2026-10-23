@@ -29,6 +29,9 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
         SharpTurnDeg = _buf.ReadFloat();
         SharpTurnSpeedFactor = _buf.ReadFloat();
         DrawSpeedFactor = _buf.ReadFloat();
+        MaxHp = _buf.ReadInt();
+        ArrowDamage = _buf.ReadInt();
+        LagCompMaxSeconds = _buf.ReadFloat();
     }
 
     public static MountedArcheryConfig DeserializeMountedArcheryConfig(ByteBuf _buf)
@@ -88,6 +91,18 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
     /// draw_speed_factor
     /// </summary>
     public readonly float DrawSpeedFactor;
+    /// <summary>
+    /// max_hp
+    /// </summary>
+    public readonly int MaxHp;
+    /// <summary>
+    /// arrow_damage
+    /// </summary>
+    public readonly int ArrowDamage;
+    /// <summary>
+    /// lag_comp_max_seconds
+    /// </summary>
+    public readonly float LagCompMaxSeconds;
    
     public const int __ID__ = 1172793536;
     public override int GetTypeId() => __ID__;
@@ -112,6 +127,9 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
         + "sharpTurnDeg:" + SharpTurnDeg + ","
         + "sharpTurnSpeedFactor:" + SharpTurnSpeedFactor + ","
         + "drawSpeedFactor:" + DrawSpeedFactor + ","
+        + "maxHp:" + MaxHp + ","
+        + "arrowDamage:" + ArrowDamage + ","
+        + "lagCompMaxSeconds:" + LagCompMaxSeconds + ","
         + "}";
     }
 }
