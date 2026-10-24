@@ -32,6 +32,13 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
         MaxHp = _buf.ReadInt();
         ArrowDamage = _buf.ReadInt();
         LagCompMaxSeconds = _buf.ReadFloat();
+        ZoneInitialRadius = _buf.ReadFloat();
+        ZoneFirstRevealSeconds = _buf.ReadFloat();
+        AimAssistConeDeg = _buf.ReadFloat();
+        AimAssistRange = _buf.ReadFloat();
+        AimAssistFriction = _buf.ReadFloat();
+        AimAssistTrack = _buf.ReadFloat();
+        ZoneOvertimeDpsGrowth = _buf.ReadFloat();
     }
 
     public static MountedArcheryConfig DeserializeMountedArcheryConfig(ByteBuf _buf)
@@ -103,6 +110,34 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
     /// lag_comp_max_seconds
     /// </summary>
     public readonly float LagCompMaxSeconds;
+    /// <summary>
+    /// zone_initial_radius
+    /// </summary>
+    public readonly float ZoneInitialRadius;
+    /// <summary>
+    /// zone_first_reveal_seconds
+    /// </summary>
+    public readonly float ZoneFirstRevealSeconds;
+    /// <summary>
+    /// aim_assist_cone_deg
+    /// </summary>
+    public readonly float AimAssistConeDeg;
+    /// <summary>
+    /// aim_assist_range
+    /// </summary>
+    public readonly float AimAssistRange;
+    /// <summary>
+    /// aim_assist_friction
+    /// </summary>
+    public readonly float AimAssistFriction;
+    /// <summary>
+    /// aim_assist_track
+    /// </summary>
+    public readonly float AimAssistTrack;
+    /// <summary>
+    /// zone_overtime_dps_growth
+    /// </summary>
+    public readonly float ZoneOvertimeDpsGrowth;
    
     public const int __ID__ = 1172793536;
     public override int GetTypeId() => __ID__;
@@ -130,6 +165,13 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
         + "maxHp:" + MaxHp + ","
         + "arrowDamage:" + ArrowDamage + ","
         + "lagCompMaxSeconds:" + LagCompMaxSeconds + ","
+        + "zoneInitialRadius:" + ZoneInitialRadius + ","
+        + "zoneFirstRevealSeconds:" + ZoneFirstRevealSeconds + ","
+        + "aimAssistConeDeg:" + AimAssistConeDeg + ","
+        + "aimAssistRange:" + AimAssistRange + ","
+        + "aimAssistFriction:" + AimAssistFriction + ","
+        + "aimAssistTrack:" + AimAssistTrack + ","
+        + "zoneOvertimeDpsGrowth:" + ZoneOvertimeDpsGrowth + ","
         + "}";
     }
 }
