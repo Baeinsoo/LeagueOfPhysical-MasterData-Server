@@ -39,6 +39,7 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
         AimAssistFriction = _buf.ReadFloat();
         AimAssistTrack = _buf.ReadFloat();
         ZoneOvertimeDpsGrowth = _buf.ReadFloat();
+        MountReverseSpeed = _buf.ReadFloat();
     }
 
     public static MountedArcheryConfig DeserializeMountedArcheryConfig(ByteBuf _buf)
@@ -138,6 +139,10 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
     /// zone_overtime_dps_growth
     /// </summary>
     public readonly float ZoneOvertimeDpsGrowth;
+    /// <summary>
+    /// mount_reverse_speed
+    /// </summary>
+    public readonly float MountReverseSpeed;
    
     public const int __ID__ = 1172793536;
     public override int GetTypeId() => __ID__;
@@ -172,6 +177,7 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
         + "aimAssistFriction:" + AimAssistFriction + ","
         + "aimAssistTrack:" + AimAssistTrack + ","
         + "zoneOvertimeDpsGrowth:" + ZoneOvertimeDpsGrowth + ","
+        + "mountReverseSpeed:" + MountReverseSpeed + ","
         + "}";
     }
 }
