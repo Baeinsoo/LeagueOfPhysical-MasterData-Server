@@ -40,6 +40,10 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
         AimAssistTrack = _buf.ReadFloat();
         ZoneOvertimeDpsGrowth = _buf.ReadFloat();
         MountReverseSpeed = _buf.ReadFloat();
+        BotAimErrorDeg = _buf.ReadFloat();
+        BotReactionMinSeconds = _buf.ReadFloat();
+        BotReactionMaxSeconds = _buf.ReadFloat();
+        BotEngageRange = _buf.ReadFloat();
     }
 
     public static MountedArcheryConfig DeserializeMountedArcheryConfig(ByteBuf _buf)
@@ -143,6 +147,22 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
     /// mount_reverse_speed
     /// </summary>
     public readonly float MountReverseSpeed;
+    /// <summary>
+    /// bot_aim_error_deg
+    /// </summary>
+    public readonly float BotAimErrorDeg;
+    /// <summary>
+    /// bot_reaction_min_seconds
+    /// </summary>
+    public readonly float BotReactionMinSeconds;
+    /// <summary>
+    /// bot_reaction_max_seconds
+    /// </summary>
+    public readonly float BotReactionMaxSeconds;
+    /// <summary>
+    /// bot_engage_range
+    /// </summary>
+    public readonly float BotEngageRange;
    
     public const int __ID__ = 1172793536;
     public override int GetTypeId() => __ID__;
@@ -178,6 +198,10 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
         + "aimAssistTrack:" + AimAssistTrack + ","
         + "zoneOvertimeDpsGrowth:" + ZoneOvertimeDpsGrowth + ","
         + "mountReverseSpeed:" + MountReverseSpeed + ","
+        + "botAimErrorDeg:" + BotAimErrorDeg + ","
+        + "botReactionMinSeconds:" + BotReactionMinSeconds + ","
+        + "botReactionMaxSeconds:" + BotReactionMaxSeconds + ","
+        + "botEngageRange:" + BotEngageRange + ","
         + "}";
     }
 }
