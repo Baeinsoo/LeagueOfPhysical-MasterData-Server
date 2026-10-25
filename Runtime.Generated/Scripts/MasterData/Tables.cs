@@ -101,6 +101,10 @@ public partial class Tables
     /// MountedArcheryZone(말 위 활쏘기 원 단계: 쉼&#183;축소&#183;끝 반지름&#183;초당 피해, 클서 공용)
     /// </summary>
     public TbMountedArcheryZone TbMountedArcheryZone {get; }
+    /// <summary>
+    /// KnockbackConfig(넉백 생존전 튜닝, 클서 공용)
+    /// </summary>
+    public TbKnockbackConfig TbKnockbackConfig {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
@@ -126,6 +130,7 @@ public partial class Tables
         TbDodgeStage = new TbDodgeStage(loader("tbdodgestage"));
         TbMountedArcheryConfig = new TbMountedArcheryConfig(loader("tbmountedarcheryconfig"));
         TbMountedArcheryZone = new TbMountedArcheryZone(loader("tbmountedarcheryzone"));
+        TbKnockbackConfig = new TbKnockbackConfig(loader("tbknockbackconfig"));
         ResolveRef();
     }
     
@@ -153,6 +158,7 @@ public partial class Tables
         TbDodgeStage.ResolveRef(this);
         TbMountedArcheryConfig.ResolveRef(this);
         TbMountedArcheryZone.ResolveRef(this);
+        TbKnockbackConfig.ResolveRef(this);
     }
 }
 
