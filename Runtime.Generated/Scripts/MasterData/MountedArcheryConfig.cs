@@ -44,6 +44,7 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
         BotReactionMinSeconds = _buf.ReadFloat();
         BotReactionMaxSeconds = _buf.ReadFloat();
         BotEngageRange = _buf.ReadFloat();
+        FullDrawSeconds = _buf.ReadFloat();
     }
 
     public static MountedArcheryConfig DeserializeMountedArcheryConfig(ByteBuf _buf)
@@ -163,6 +164,10 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
     /// bot_engage_range
     /// </summary>
     public readonly float BotEngageRange;
+    /// <summary>
+    /// full_draw_seconds
+    /// </summary>
+    public readonly float FullDrawSeconds;
    
     public const int __ID__ = 1172793536;
     public override int GetTypeId() => __ID__;
@@ -202,6 +207,7 @@ public sealed partial class MountedArcheryConfig : Luban.BeanBase
         + "botReactionMinSeconds:" + BotReactionMinSeconds + ","
         + "botReactionMaxSeconds:" + BotReactionMaxSeconds + ","
         + "botEngageRange:" + BotEngageRange + ","
+        + "fullDrawSeconds:" + FullDrawSeconds + ","
         + "}";
     }
 }
