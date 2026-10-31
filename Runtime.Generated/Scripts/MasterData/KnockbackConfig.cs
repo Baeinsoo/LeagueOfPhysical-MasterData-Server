@@ -42,6 +42,10 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
         StunGain = _buf.ReadFloat();
         BodyRestitution = _buf.ReadFloat();
         ZoneFirstRevealSeconds = _buf.ReadFloat();
+        PillarCount = _buf.ReadInt();
+        PillarRingRadius = _buf.ReadFloat();
+        PillarRadius = _buf.ReadFloat();
+        PillarHeight = _buf.ReadFloat();
     }
 
     public static KnockbackConfig DeserializeKnockbackConfig(ByteBuf _buf)
@@ -153,6 +157,22 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
     /// zone_first_reveal_seconds
     /// </summary>
     public readonly float ZoneFirstRevealSeconds;
+    /// <summary>
+    /// pillar_count
+    /// </summary>
+    public readonly int PillarCount;
+    /// <summary>
+    /// pillar_ring_radius
+    /// </summary>
+    public readonly float PillarRingRadius;
+    /// <summary>
+    /// pillar_radius
+    /// </summary>
+    public readonly float PillarRadius;
+    /// <summary>
+    /// pillar_height
+    /// </summary>
+    public readonly float PillarHeight;
    
     public const int __ID__ = 1940728509;
     public override int GetTypeId() => __ID__;
@@ -190,6 +210,10 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
         + "stunGain:" + StunGain + ","
         + "bodyRestitution:" + BodyRestitution + ","
         + "zoneFirstRevealSeconds:" + ZoneFirstRevealSeconds + ","
+        + "pillarCount:" + PillarCount + ","
+        + "pillarRingRadius:" + PillarRingRadius + ","
+        + "pillarRadius:" + PillarRadius + ","
+        + "pillarHeight:" + PillarHeight + ","
         + "}";
     }
 }
