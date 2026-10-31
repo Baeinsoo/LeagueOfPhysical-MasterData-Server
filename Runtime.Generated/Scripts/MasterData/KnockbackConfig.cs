@@ -25,6 +25,23 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
         HoleRadius = _buf.ReadFloat();
         FallDepth = _buf.ReadFloat();
         SpawnRadius = _buf.ReadFloat();
+        ShotSpeed = _buf.ReadFloat();
+        ShotRange = _buf.ReadFloat();
+        ShotRadius = _buf.ReadFloat();
+        HitRadius = _buf.ReadFloat();
+        AmmoMax = _buf.ReadInt();
+        ReloadSeconds = _buf.ReadFloat();
+        FireCooldownSeconds = _buf.ReadFloat();
+        Recoil = _buf.ReadFloat();
+        DamagePerHit = _buf.ReadInt();
+        KnockbackBase = _buf.ReadFloat();
+        KnockbackScale = _buf.ReadFloat();
+        KnockbackCarry = _buf.ReadFloat();
+        StunBase = _buf.ReadFloat();
+        StunScale = _buf.ReadFloat();
+        StunGain = _buf.ReadFloat();
+        BodyRestitution = _buf.ReadFloat();
+        ZoneFirstRevealSeconds = _buf.ReadFloat();
     }
 
     public static KnockbackConfig DeserializeKnockbackConfig(ByteBuf _buf)
@@ -68,6 +85,74 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
     /// spawn_radius
     /// </summary>
     public readonly float SpawnRadius;
+    /// <summary>
+    /// shot_speed
+    /// </summary>
+    public readonly float ShotSpeed;
+    /// <summary>
+    /// shot_range
+    /// </summary>
+    public readonly float ShotRange;
+    /// <summary>
+    /// shot_radius
+    /// </summary>
+    public readonly float ShotRadius;
+    /// <summary>
+    /// hit_radius
+    /// </summary>
+    public readonly float HitRadius;
+    /// <summary>
+    /// ammo_max
+    /// </summary>
+    public readonly int AmmoMax;
+    /// <summary>
+    /// reload_seconds
+    /// </summary>
+    public readonly float ReloadSeconds;
+    /// <summary>
+    /// fire_cooldown_seconds
+    /// </summary>
+    public readonly float FireCooldownSeconds;
+    /// <summary>
+    /// recoil
+    /// </summary>
+    public readonly float Recoil;
+    /// <summary>
+    /// damage_per_hit
+    /// </summary>
+    public readonly int DamagePerHit;
+    /// <summary>
+    /// knockback_base
+    /// </summary>
+    public readonly float KnockbackBase;
+    /// <summary>
+    /// knockback_scale
+    /// </summary>
+    public readonly float KnockbackScale;
+    /// <summary>
+    /// knockback_carry
+    /// </summary>
+    public readonly float KnockbackCarry;
+    /// <summary>
+    /// stun_base
+    /// </summary>
+    public readonly float StunBase;
+    /// <summary>
+    /// stun_scale
+    /// </summary>
+    public readonly float StunScale;
+    /// <summary>
+    /// stun_gain
+    /// </summary>
+    public readonly float StunGain;
+    /// <summary>
+    /// body_restitution
+    /// </summary>
+    public readonly float BodyRestitution;
+    /// <summary>
+    /// zone_first_reveal_seconds
+    /// </summary>
+    public readonly float ZoneFirstRevealSeconds;
    
     public const int __ID__ = 1940728509;
     public override int GetTypeId() => __ID__;
@@ -88,6 +173,23 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
         + "holeRadius:" + HoleRadius + ","
         + "fallDepth:" + FallDepth + ","
         + "spawnRadius:" + SpawnRadius + ","
+        + "shotSpeed:" + ShotSpeed + ","
+        + "shotRange:" + ShotRange + ","
+        + "shotRadius:" + ShotRadius + ","
+        + "hitRadius:" + HitRadius + ","
+        + "ammoMax:" + AmmoMax + ","
+        + "reloadSeconds:" + ReloadSeconds + ","
+        + "fireCooldownSeconds:" + FireCooldownSeconds + ","
+        + "recoil:" + Recoil + ","
+        + "damagePerHit:" + DamagePerHit + ","
+        + "knockbackBase:" + KnockbackBase + ","
+        + "knockbackScale:" + KnockbackScale + ","
+        + "knockbackCarry:" + KnockbackCarry + ","
+        + "stunBase:" + StunBase + ","
+        + "stunScale:" + StunScale + ","
+        + "stunGain:" + StunGain + ","
+        + "bodyRestitution:" + BodyRestitution + ","
+        + "zoneFirstRevealSeconds:" + ZoneFirstRevealSeconds + ","
         + "}";
     }
 }

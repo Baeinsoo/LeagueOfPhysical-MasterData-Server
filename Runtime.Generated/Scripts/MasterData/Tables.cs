@@ -105,6 +105,10 @@ public partial class Tables
     /// KnockbackConfig(넉백 생존전 튜닝, 클서 공용)
     /// </summary>
     public TbKnockbackConfig TbKnockbackConfig {get; }
+    /// <summary>
+    /// KnockbackZone(넉백 생존전 원 단계: 쉼&#183;축소&#183;끝 반지름, 클서 공용)
+    /// </summary>
+    public TbKnockbackZone TbKnockbackZone {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
@@ -131,6 +135,7 @@ public partial class Tables
         TbMountedArcheryConfig = new TbMountedArcheryConfig(loader("tbmountedarcheryconfig"));
         TbMountedArcheryZone = new TbMountedArcheryZone(loader("tbmountedarcheryzone"));
         TbKnockbackConfig = new TbKnockbackConfig(loader("tbknockbackconfig"));
+        TbKnockbackZone = new TbKnockbackZone(loader("tbknockbackzone"));
         ResolveRef();
     }
     
@@ -159,6 +164,7 @@ public partial class Tables
         TbMountedArcheryConfig.ResolveRef(this);
         TbMountedArcheryZone.ResolveRef(this);
         TbKnockbackConfig.ResolveRef(this);
+        TbKnockbackZone.ResolveRef(this);
     }
 }
 
