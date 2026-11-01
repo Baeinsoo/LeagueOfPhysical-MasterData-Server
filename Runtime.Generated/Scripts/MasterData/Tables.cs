@@ -109,6 +109,10 @@ public partial class Tables
     /// KnockbackZone(넉백 생존전 원 단계: 쉼&#183;축소&#183;끝 반지름, 클서 공용)
     /// </summary>
     public TbKnockbackZone TbKnockbackZone {get; }
+    /// <summary>
+    /// KnockbackMode(게임 모드 id → 팀 수, 0 = 개인전, 클서 공용)
+    /// </summary>
+    public TbKnockbackMode TbKnockbackMode {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
@@ -136,6 +140,7 @@ public partial class Tables
         TbMountedArcheryZone = new TbMountedArcheryZone(loader("tbmountedarcheryzone"));
         TbKnockbackConfig = new TbKnockbackConfig(loader("tbknockbackconfig"));
         TbKnockbackZone = new TbKnockbackZone(loader("tbknockbackzone"));
+        TbKnockbackMode = new TbKnockbackMode(loader("tbknockbackmode"));
         ResolveRef();
     }
     
@@ -165,6 +170,7 @@ public partial class Tables
         TbMountedArcheryZone.ResolveRef(this);
         TbKnockbackConfig.ResolveRef(this);
         TbKnockbackZone.ResolveRef(this);
+        TbKnockbackMode.ResolveRef(this);
     }
 }
 
