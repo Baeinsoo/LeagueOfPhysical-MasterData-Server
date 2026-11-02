@@ -49,6 +49,11 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
         EdgeMode = _buf.ReadInt();
         HazardDamagePerSecond = _buf.ReadFloat();
         HazardSpeedScale = _buf.ReadFloat();
+        CrateFirstSeconds = _buf.ReadFloat();
+        CrateIntervalSeconds = _buf.ReadFloat();
+        CrateWarnSeconds = _buf.ReadFloat();
+        CratePickupRadius = _buf.ReadFloat();
+        BlastRadius = _buf.ReadFloat();
     }
 
     public static KnockbackConfig DeserializeKnockbackConfig(ByteBuf _buf)
@@ -188,6 +193,26 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
     /// hazard_speed_scale
     /// </summary>
     public readonly float HazardSpeedScale;
+    /// <summary>
+    /// crate_first_seconds
+    /// </summary>
+    public readonly float CrateFirstSeconds;
+    /// <summary>
+    /// crate_interval_seconds
+    /// </summary>
+    public readonly float CrateIntervalSeconds;
+    /// <summary>
+    /// crate_warn_seconds
+    /// </summary>
+    public readonly float CrateWarnSeconds;
+    /// <summary>
+    /// crate_pickup_radius
+    /// </summary>
+    public readonly float CratePickupRadius;
+    /// <summary>
+    /// blast_radius
+    /// </summary>
+    public readonly float BlastRadius;
    
     public const int __ID__ = 1940728509;
     public override int GetTypeId() => __ID__;
@@ -232,6 +257,11 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
         + "edgeMode:" + EdgeMode + ","
         + "hazardDamagePerSecond:" + HazardDamagePerSecond + ","
         + "hazardSpeedScale:" + HazardSpeedScale + ","
+        + "crateFirstSeconds:" + CrateFirstSeconds + ","
+        + "crateIntervalSeconds:" + CrateIntervalSeconds + ","
+        + "crateWarnSeconds:" + CrateWarnSeconds + ","
+        + "cratePickupRadius:" + CratePickupRadius + ","
+        + "blastRadius:" + BlastRadius + ","
         + "}";
     }
 }
