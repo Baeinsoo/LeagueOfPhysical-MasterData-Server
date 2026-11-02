@@ -46,6 +46,9 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
         PillarRingRadius = _buf.ReadFloat();
         PillarRadius = _buf.ReadFloat();
         PillarHeight = _buf.ReadFloat();
+        EdgeMode = _buf.ReadInt();
+        HazardDamagePerSecond = _buf.ReadFloat();
+        HazardSpeedScale = _buf.ReadFloat();
     }
 
     public static KnockbackConfig DeserializeKnockbackConfig(ByteBuf _buf)
@@ -173,6 +176,18 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
     /// pillar_height
     /// </summary>
     public readonly float PillarHeight;
+    /// <summary>
+    /// edge_mode
+    /// </summary>
+    public readonly int EdgeMode;
+    /// <summary>
+    /// hazard_damage_per_second
+    /// </summary>
+    public readonly float HazardDamagePerSecond;
+    /// <summary>
+    /// hazard_speed_scale
+    /// </summary>
+    public readonly float HazardSpeedScale;
    
     public const int __ID__ = 1940728509;
     public override int GetTypeId() => __ID__;
@@ -214,6 +229,9 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
         + "pillarRingRadius:" + PillarRingRadius + ","
         + "pillarRadius:" + PillarRadius + ","
         + "pillarHeight:" + PillarHeight + ","
+        + "edgeMode:" + EdgeMode + ","
+        + "hazardDamagePerSecond:" + HazardDamagePerSecond + ","
+        + "hazardSpeedScale:" + HazardSpeedScale + ","
         + "}";
     }
 }
