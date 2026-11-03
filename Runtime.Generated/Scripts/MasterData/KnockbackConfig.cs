@@ -54,6 +54,9 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
         CrateWarnSeconds = _buf.ReadFloat();
         CratePickupRadius = _buf.ReadFloat();
         BlastRadius = _buf.ReadFloat();
+        CrackEnabled = _buf.ReadInt();
+        CrackHitsToCollapse = _buf.ReadInt();
+        CrackCollapseSeconds = _buf.ReadFloat();
     }
 
     public static KnockbackConfig DeserializeKnockbackConfig(ByteBuf _buf)
@@ -213,6 +216,18 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
     /// blast_radius
     /// </summary>
     public readonly float BlastRadius;
+    /// <summary>
+    /// crack_enabled
+    /// </summary>
+    public readonly int CrackEnabled;
+    /// <summary>
+    /// crack_hits_to_collapse
+    /// </summary>
+    public readonly int CrackHitsToCollapse;
+    /// <summary>
+    /// crack_collapse_seconds
+    /// </summary>
+    public readonly float CrackCollapseSeconds;
    
     public const int __ID__ = 1940728509;
     public override int GetTypeId() => __ID__;
@@ -262,6 +277,9 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
         + "crateWarnSeconds:" + CrateWarnSeconds + ","
         + "cratePickupRadius:" + CratePickupRadius + ","
         + "blastRadius:" + BlastRadius + ","
+        + "crackEnabled:" + CrackEnabled + ","
+        + "crackHitsToCollapse:" + CrackHitsToCollapse + ","
+        + "crackCollapseSeconds:" + CrackCollapseSeconds + ","
         + "}";
     }
 }
