@@ -54,6 +54,13 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
         CrateWarnSeconds = _buf.ReadFloat();
         CratePickupRadius = _buf.ReadFloat();
         BlastRadius = _buf.ReadFloat();
+        BarrelCount = _buf.ReadInt();
+        BarrelRadius = _buf.ReadFloat();
+        BarrelRingRadius = _buf.ReadFloat();
+        BarrelFriction = _buf.ReadFloat();
+        BarrelRestitution = _buf.ReadFloat();
+        BarrelShotImpulse = _buf.ReadFloat();
+        BarrelHitScale = _buf.ReadFloat();
     }
 
     public static KnockbackConfig DeserializeKnockbackConfig(ByteBuf _buf)
@@ -213,6 +220,34 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
     /// blast_radius
     /// </summary>
     public readonly float BlastRadius;
+    /// <summary>
+    /// barrel_count
+    /// </summary>
+    public readonly int BarrelCount;
+    /// <summary>
+    /// barrel_radius
+    /// </summary>
+    public readonly float BarrelRadius;
+    /// <summary>
+    /// barrel_ring_radius
+    /// </summary>
+    public readonly float BarrelRingRadius;
+    /// <summary>
+    /// barrel_friction
+    /// </summary>
+    public readonly float BarrelFriction;
+    /// <summary>
+    /// barrel_restitution
+    /// </summary>
+    public readonly float BarrelRestitution;
+    /// <summary>
+    /// barrel_shot_impulse
+    /// </summary>
+    public readonly float BarrelShotImpulse;
+    /// <summary>
+    /// barrel_hit_scale
+    /// </summary>
+    public readonly float BarrelHitScale;
    
     public const int __ID__ = 1940728509;
     public override int GetTypeId() => __ID__;
@@ -262,6 +297,13 @@ public sealed partial class KnockbackConfig : Luban.BeanBase
         + "crateWarnSeconds:" + CrateWarnSeconds + ","
         + "cratePickupRadius:" + CratePickupRadius + ","
         + "blastRadius:" + BlastRadius + ","
+        + "barrelCount:" + BarrelCount + ","
+        + "barrelRadius:" + BarrelRadius + ","
+        + "barrelRingRadius:" + BarrelRingRadius + ","
+        + "barrelFriction:" + BarrelFriction + ","
+        + "barrelRestitution:" + BarrelRestitution + ","
+        + "barrelShotImpulse:" + BarrelShotImpulse + ","
+        + "barrelHitScale:" + BarrelHitScale + ","
         + "}";
     }
 }
