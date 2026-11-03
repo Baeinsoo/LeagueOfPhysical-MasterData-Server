@@ -113,6 +113,10 @@ public partial class Tables
     /// KnockbackMode(게임 모드 id → 팀 수, 0 = 개인전, 클서 공용)
     /// </summary>
     public TbKnockbackMode TbKnockbackMode {get; }
+    /// <summary>
+    /// CardRushConfig(카드 러시 시간&#183;봇 튜닝, 클서 공용)
+    /// </summary>
+    public TbCardRushConfig TbCardRushConfig {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
@@ -141,6 +145,7 @@ public partial class Tables
         TbKnockbackConfig = new TbKnockbackConfig(loader("tbknockbackconfig"));
         TbKnockbackZone = new TbKnockbackZone(loader("tbknockbackzone"));
         TbKnockbackMode = new TbKnockbackMode(loader("tbknockbackmode"));
+        TbCardRushConfig = new TbCardRushConfig(loader("tbcardrushconfig"));
         ResolveRef();
     }
     
@@ -171,6 +176,7 @@ public partial class Tables
         TbKnockbackConfig.ResolveRef(this);
         TbKnockbackZone.ResolveRef(this);
         TbKnockbackMode.ResolveRef(this);
+        TbCardRushConfig.ResolveRef(this);
     }
 }
 
