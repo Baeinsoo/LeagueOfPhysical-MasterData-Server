@@ -18,13 +18,23 @@ public sealed partial class CardRushConfig : Luban.BeanBase
     {
         Id = _buf.ReadInt();
         MatchDurationSeconds = _buf.ReadFloat();
-        MoveSeconds = _buf.ReadFloat();
-        StunSeconds = _buf.ReadFloat();
         MinLanes = _buf.ReadInt();
+        TrackLengthM = _buf.ReadFloat();
+        ObstacleGapMinM = _buf.ReadFloat();
+        ObstacleGapMaxM = _buf.ReadFloat();
+        BarricadeShare = _buf.ReadFloat();
+        ZoneGapMinM = _buf.ReadFloat();
+        ZoneGapMaxM = _buf.ReadFloat();
+        BarricadeWaitSeconds = _buf.ReadFloat();
+        RollKnockM = _buf.ReadFloat();
+        RollStunSeconds = _buf.ReadFloat();
+        ZoneKnockM = _buf.ReadFloat();
+        ZoneStunSeconds = _buf.ReadFloat();
         BotReactMinSeconds = _buf.ReadFloat();
         BotReactMaxSeconds = _buf.ReadFloat();
-        BotTimingJitterSeconds = _buf.ReadFloat();
-        BotMissChance = _buf.ReadFloat();
+        BotReactExtraSeconds = _buf.ReadFloat();
+        BotHesitateChance = _buf.ReadFloat();
+        BotFreeDashChance = _buf.ReadFloat();
     }
 
     public static CardRushConfig DeserializeCardRushConfig(ByteBuf _buf)
@@ -41,17 +51,53 @@ public sealed partial class CardRushConfig : Luban.BeanBase
     /// </summary>
     public readonly float MatchDurationSeconds;
     /// <summary>
-    /// move_seconds
-    /// </summary>
-    public readonly float MoveSeconds;
-    /// <summary>
-    /// stun_seconds
-    /// </summary>
-    public readonly float StunSeconds;
-    /// <summary>
     /// min_lanes
     /// </summary>
     public readonly int MinLanes;
+    /// <summary>
+    /// track_length_m
+    /// </summary>
+    public readonly float TrackLengthM;
+    /// <summary>
+    /// obstacle_gap_min_m
+    /// </summary>
+    public readonly float ObstacleGapMinM;
+    /// <summary>
+    /// obstacle_gap_max_m
+    /// </summary>
+    public readonly float ObstacleGapMaxM;
+    /// <summary>
+    /// barricade_share
+    /// </summary>
+    public readonly float BarricadeShare;
+    /// <summary>
+    /// zone_gap_min_m
+    /// </summary>
+    public readonly float ZoneGapMinM;
+    /// <summary>
+    /// zone_gap_max_m
+    /// </summary>
+    public readonly float ZoneGapMaxM;
+    /// <summary>
+    /// barricade_wait_seconds
+    /// </summary>
+    public readonly float BarricadeWaitSeconds;
+    /// <summary>
+    /// roll_knock_m
+    /// </summary>
+    public readonly float RollKnockM;
+    /// <summary>
+    /// roll_stun_seconds
+    /// </summary>
+    public readonly float RollStunSeconds;
+    /// <summary>
+    /// zone_knock_m
+    /// </summary>
+    public readonly float ZoneKnockM;
+    /// <summary>
+    /// zone_stun_seconds
+    /// </summary>
+    public readonly float ZoneStunSeconds;
     /// <summary>
     /// bot_react_min_seconds
     /// </summary>
@@ -61,13 +107,17 @@ public sealed partial class CardRushConfig : Luban.BeanBase
     /// </summary>
     public readonly float BotReactMaxSeconds;
     /// <summary>
-    /// bot_timing_jitter_seconds
+    /// bot_react_extra_seconds
     /// </summary>
-    public readonly float BotTimingJitterSeconds;
+    public readonly float BotReactExtraSeconds;
     /// <summary>
-    /// bot_miss_chance
+    /// bot_hesitate_chance
     /// </summary>
-    public readonly float BotMissChance;
+    public readonly float BotHesitateChance;
+    /// <summary>
+    /// bot_free_dash_chance
+    /// </summary>
+    public readonly float BotFreeDashChance;
    
     public const int __ID__ = -1237101430;
     public override int GetTypeId() => __ID__;
@@ -81,13 +131,23 @@ public sealed partial class CardRushConfig : Luban.BeanBase
         return "{ "
         + "id:" + Id + ","
         + "matchDurationSeconds:" + MatchDurationSeconds + ","
-        + "moveSeconds:" + MoveSeconds + ","
-        + "stunSeconds:" + StunSeconds + ","
         + "minLanes:" + MinLanes + ","
+        + "trackLengthM:" + TrackLengthM + ","
+        + "obstacleGapMinM:" + ObstacleGapMinM + ","
+        + "obstacleGapMaxM:" + ObstacleGapMaxM + ","
+        + "barricadeShare:" + BarricadeShare + ","
+        + "zoneGapMinM:" + ZoneGapMinM + ","
+        + "zoneGapMaxM:" + ZoneGapMaxM + ","
+        + "barricadeWaitSeconds:" + BarricadeWaitSeconds + ","
+        + "rollKnockM:" + RollKnockM + ","
+        + "rollStunSeconds:" + RollStunSeconds + ","
+        + "zoneKnockM:" + ZoneKnockM + ","
+        + "zoneStunSeconds:" + ZoneStunSeconds + ","
         + "botReactMinSeconds:" + BotReactMinSeconds + ","
         + "botReactMaxSeconds:" + BotReactMaxSeconds + ","
-        + "botTimingJitterSeconds:" + BotTimingJitterSeconds + ","
-        + "botMissChance:" + BotMissChance + ","
+        + "botReactExtraSeconds:" + BotReactExtraSeconds + ","
+        + "botHesitateChance:" + BotHesitateChance + ","
+        + "botFreeDashChance:" + BotFreeDashChance + ","
         + "}";
     }
 }
