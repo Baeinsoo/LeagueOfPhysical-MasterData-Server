@@ -35,6 +35,8 @@ public sealed partial class CardRushConfig : Luban.BeanBase
         BotReactExtraSeconds = _buf.ReadFloat();
         BotHesitateChance = _buf.ReadFloat();
         BotFreeDashChance = _buf.ReadFloat();
+        PitShare = _buf.ReadFloat();
+        PitStunSeconds = _buf.ReadFloat();
     }
 
     public static CardRushConfig DeserializeCardRushConfig(ByteBuf _buf)
@@ -118,6 +120,14 @@ public sealed partial class CardRushConfig : Luban.BeanBase
     /// bot_free_dash_chance
     /// </summary>
     public readonly float BotFreeDashChance;
+    /// <summary>
+    /// pit_share
+    /// </summary>
+    public readonly float PitShare;
+    /// <summary>
+    /// pit_stun_seconds
+    /// </summary>
+    public readonly float PitStunSeconds;
    
     public const int __ID__ = -1237101430;
     public override int GetTypeId() => __ID__;
@@ -148,6 +158,8 @@ public sealed partial class CardRushConfig : Luban.BeanBase
         + "botReactExtraSeconds:" + BotReactExtraSeconds + ","
         + "botHesitateChance:" + BotHesitateChance + ","
         + "botFreeDashChance:" + BotFreeDashChance + ","
+        + "pitShare:" + PitShare + ","
+        + "pitStunSeconds:" + PitStunSeconds + ","
         + "}";
     }
 }
